@@ -1,6 +1,7 @@
 package controller;
 
 import model.Client;
+import model.Hotel;
 import repository.BookingRepository;
 import repository.ClientRepository;
 import repository.HotelRepository;
@@ -28,6 +29,15 @@ public class Manager {
     public void updateClient (){
         Long chosenId = Long.valueOf(Integer.parseInt(this.getUserInput("please enter the client id to be updated")));
         clientRepository.updateClientFromDB(chosenId);
+    }
+
+    public void createHotel() {
+        Hotel hotel = new Hotel();
+        hotel.setAddress(this.getUserInput("Please enter Hotel name: "));
+        hotel.setAddress(this.getUserInput("Please enter Hotel address: "));
+        hotel.setNumberOfRooms(Integer.parseInt(this.getUserInput("Please enter number how many rooms the hotel contains: ")));
+        hotel.setPrice(Double.valueOf(this.getUserInput("Enter the price for one night")));
+        hotelRepository.createHotelToDB(hotel);
     }
     private String getUserInput(String message) {
         return JOptionPane.showInputDialog(message);

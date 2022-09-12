@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import java.util.Scanner;
+import javax.swing.*;
 
 public class ClientRepository {
 
@@ -52,30 +52,34 @@ public class ClientRepository {
     public void updateClientFromDB(Long clientId) {
         Session session = factory.openSession();
         Transaction transaction = null;
-        Scanner scanner = new Scanner(System.in);
-        try {
 
+        try {
+            transaction = session.beginTransaction();
             Client foundClient = session.find(Client.class, clientId);
-            System.out.println(foundClient);
-            System.out.println("please specify what what info you want to update \n " + "for firstName enter 1 and for lastname enter 2");
-            int userChoice = Integer.parseInt(scanner.nextLine());
+            int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what info you want to update\n"+" for firstName enter 1 and for lastname enter 2"));
+
             if (userChoice == 1) {
-                System.out.println("please enter your new name");
-                foundClient.setFirstName(scanner.nextLine());
-            } else {
-                System.out.println("please enter you new lastname");
-                foundClient.setLastName(scanner.nextLine());
+                foundClient.setFirstName(this.getUserInput("Please enter new firstname: "));
+            } else if (userChoice == 2){
+                foundClient.setLastName(this.getUserInput("Please enter new lastname: "));
+            }else{
+                System.out.println("Something went wrong!");
             }
             session.merge(foundClient);
             transaction.commit();
 
-
         } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             System.out.println(e.getClass() + " : " + e.getMessage());
-
         } finally {
             session.close();
         }
 
+    }
+
+    private String getUserInput(String message) {
+        return JOptionPane.showInputDialog(message);
     }
 }

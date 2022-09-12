@@ -9,7 +9,7 @@ public class HotelRepository {
 
     private static SessionFactory factory = SessionManager.getFactory();
 
-    public void createHotel(Hotel hotel) {
+    public void createHotelToDB(Hotel hotel) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
