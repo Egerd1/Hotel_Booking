@@ -19,7 +19,7 @@ public class Hotel {
     private Long id;
     private String hotelName;
     private String address;
-    private int numberOfRooms;
+    private int numberOfRooms = 30;
     private Double price;
 
 }
