@@ -25,4 +25,5 @@ public class Bookings {
     @OneToOne
     private Hotel hotel;
     private Double totalAmount;
+
 }

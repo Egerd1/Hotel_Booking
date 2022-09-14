@@ -47,13 +47,23 @@ public class Manager {
     }
 
     public void viewAllMyClients() {
-        int userChoice = Integer.parseInt(JOptionPane.showInputDialog(" To view all Clients enter 1"));
+        int userChoice = Integer.parseInt(JOptionPane.showInputDialog("To view all Clients enter 1"));
         if (userChoice == 1) {
             System.out.println(clientRepository.showAllMyClientsFromDB());
         } else {
             System.out.println("Maybe next time!");
             System.exit(0);
         }
+    }
+
+    public void deleteBooking() {
+        int chosenId = Integer.parseInt(this.getUserInput("Please enter the Booking id to be removed"));
+        bookingRepository.deleteBookingsFromDB(chosenId);
+    }
+
+    public void updateBooking() {
+        Long chosenId = Long.valueOf(Integer.parseInt(this.getUserInput("Please enter the Booking id to be updated")));
+        bookingRepository.updateBookingFromDB(chosenId);
     }
 
     private String getUserInput(String message) {

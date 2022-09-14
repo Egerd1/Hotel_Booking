@@ -6,6 +6,7 @@ public class Main {
 //        manager.createClient();
 //        manager.updateClient();
 //        manager.findClientById();
-        manager.viewAllMyClients();
+//        manager.viewAllMyClients();
+        manager.updateBooking();
     }
 }
