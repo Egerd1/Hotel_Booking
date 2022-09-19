@@ -73,14 +73,14 @@ public class BookingRepository {
 
             switch (userChoice) {
                 case 1:
-                    String inputArrival = JOptionPane.showInputDialog("Please enter new arrival date: MM.dd.yy");
-                    DateFormat inputFormatArrival = new SimpleDateFormat("MM.dd.yy");
+                    String inputArrival = JOptionPane.showInputDialog("Please enter new arrival date: MM-dd-yy");
+                    DateFormat inputFormatArrival = new SimpleDateFormat("MM-dd-yy");
                     Date newDateArrival = inputFormatArrival.parse(inputArrival);
                     foundBooking.setArrivalDate(newDateArrival);
                     break;
                 case 2:
-                    String inputLeaving = JOptionPane.showInputDialog("Please enter new leaving date: MM.dd.yy");
-                    DateFormat inputFormatLeaving = new SimpleDateFormat("MM.dd.yy");
+                    String inputLeaving = JOptionPane.showInputDialog("Please enter new leaving date: MM-dd-yy");
+                    DateFormat inputFormatLeaving = new SimpleDateFormat("MM-dd-yy");
                     Date newDateLeaving = inputFormatLeaving.parse(inputLeaving);
                     foundBooking.setLeaveDate(newDateLeaving);
                     break;

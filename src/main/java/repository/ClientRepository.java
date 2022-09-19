@@ -105,10 +105,10 @@ public class ClientRepository {
     public ArrayList<Client> showAllMyClientsFromDB(){
         Session session = factory.openSession();
         Transaction transaction = null;
-        ArrayList<Client> petFoods = null;
+        ArrayList<Client> myClients = null;
         try {
             transaction = session.beginTransaction();
-            petFoods = (ArrayList<Client>) session.createQuery("FROM clients", Client.class).getResultList();
+            myClients = (ArrayList<Client>) session.createQuery("FROM clients", Client.class).getResultList();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -119,7 +119,7 @@ public class ClientRepository {
             session.close();
         }
 
-        return petFoods;
+        return myClients;
     }
 
     private String getUserInput(String message) {
