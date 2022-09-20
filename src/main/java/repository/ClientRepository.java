@@ -91,7 +91,7 @@ public class ClientRepository {
 
     }
 
-    public void findClientByPersonalIdCode(Long id) {
+    public Client findClientByPersonalIdCode(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Client client = null;
@@ -113,6 +113,7 @@ public class ClientRepository {
         } finally {
             session.close();
         }
+        return client;
     }
 
     public Client findClientByFirstName(String clientName) {

@@ -3,7 +3,7 @@ package model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,8 +16,8 @@ public class Bookings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date arrivalDate;
-    private Date leaveDate;
+    private LocalDate arrivalDate;
+    private LocalDate leaveDate;
 
     @ManyToOne
     private Client client;

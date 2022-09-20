@@ -89,13 +89,14 @@ public class HotelRepository {
         }
 
     }
-    public void findHotelFromDBById(int id) {
+
+    public Hotel findHotelFromDBById(int id) {
         Session session = factory.openSession();
         Transaction transaction = null;
-
+        Hotel hotel = null;
         try {
             transaction = session.beginTransaction();
-            Hotel hotel = session.find(Hotel.class, id);
+            hotel = session.find(Hotel.class, id);
             System.out.println(hotel);
             transaction.commit();
         } catch (Exception e) {
@@ -106,8 +107,10 @@ public class HotelRepository {
         } finally {
             session.close();
         }
+        return hotel;
     }
-    public ArrayList<Hotel> showAllMyHotelsFromDB(){
+
+    public ArrayList<Hotel> showAllMyHotelsFromDB() {
         Session session = factory.openSession();
         Transaction transaction = null;
         ArrayList<Hotel> myHotels = null;
@@ -126,29 +129,30 @@ public class HotelRepository {
 
         return myHotels;
     }
-    public void updateHotelAvailableRooms (int id){
+
+    public void updateHotelAvailableRooms(int id) {
         Session session = factory.openSession();
         Transaction transaction = null;
-        try{
+        try {
             transaction = session.beginTransaction();
-            Hotel hotel = session.find(Hotel.class,id);
+            Hotel hotel = session.find(Hotel.class, id);
             if (hotel.getNumberOfRooms() > 0) {
                 hotel.setNumberOfRooms(hotel.getNumberOfRooms() - 1);
-            }else {
-                System.out.println("Sorry, but we have no available rooms!");
+            } else {
+                System.out.println("Sorry, but we don't have available rooms!");
             }
             session.merge(hotel);
             transaction.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             System.out.println(e.getClass() + " : " + e.getMessage());
-        }
-        finally {
+        } finally {
             session.close();
         }
     }
+
     private String getUserInput(String message) {
         return JOptionPane.showInputDialog(message);
     }

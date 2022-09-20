@@ -8,6 +8,8 @@ import repository.ClientRepository;
 import repository.HotelRepository;
 
 import javax.swing.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 public class Manager {
 
@@ -16,13 +18,14 @@ public class Manager {
     private final BookingRepository bookingRepository = new BookingRepository();
 
     //--------------------------CLIENT--------------------------------------
-    public void createClient() {
+    public Client createClient() {
         Client client = new Client();
         client.setPersonalId(Integer.parseInt(this.getUserInput("Please enter your personal id code: ")));
         client.setFirstName(this.getUserInput("Please enter your name: "));
         client.setLastName(this.getUserInput("Please enter your last name: "));
         client.setAge(this.getUserInput("Please enter your age: "));
         clientRepository.createClient(client);
+        return client;
     }
 
     public void deleteClient() {
@@ -74,9 +77,10 @@ public class Manager {
         clientRepository.updateClientFromDB(chosenId);
     }
 
-    public void findHotelById() {
+    public int findHotelById() {
         int chosenId = Integer.parseInt(this.getUserInput("To view Hotel, please enter the Hotel id"));
         hotelRepository.findHotelFromDBById(chosenId);
+        return chosenId;
     }
 
     public void viewAllMyHotels() {
@@ -91,9 +95,42 @@ public class Manager {
 
     //----------------------------BOOKING----------------------------------------
     public void createBooking() {
-        Bookings bookings = new Bookings();
-        bookingRepository.createBookingToDB(bookings);
+        Long userIdCode = Long.valueOf(this.getUserInput("Please enter your personal ID code"));
+        Client foundClient = clientRepository.findClientByPersonalIdCode(userIdCode);
+        if (foundClient==null){
+            Bookings booking = new Bookings();
+            Client newClient = this.createClient();
+            booking.setClient(newClient);
+            Hotel hotel = hotelRepository.findHotelFromDBById(this.findHotelById());
+            booking.setHotel(hotel);
+            LocalDate arrivalDate = LocalDate.parse(this.getUserInput("Please enter your arrival date in the following format 2022-12-30"));
+            LocalDate leaveDate = LocalDate.parse(this.getUserInput("Please enter your leaving date in the following format 2022-12-30"));
+            booking.setArrivalDate(arrivalDate);
+            booking.setLeaveDate(leaveDate);
+            int duration= Period.between(arrivalDate,leaveDate).getDays();
+            Double totalCostAmount = duration * hotel.getPrice();
+            booking.setTotalAmount(totalCostAmount);
+            hotelRepository.updateHotelAvailableRooms(this.findHotelById());
+            bookingRepository.createBookingToDB(booking);
+
+        }
+        if(foundClient!=null){
+            Bookings booking = new Bookings();
+            Hotel hotel = hotelRepository.findHotelFromDBById(this.findHotelById());
+            booking.setHotel(hotel);
+            booking.setClient(foundClient);
+            LocalDate arrivalDate = LocalDate.parse(this.getUserInput("please enter your arrival date in the following format 2022-12-30"));
+            LocalDate leaveDate = LocalDate.parse(this.getUserInput("please enter your leaving date in the following format 2022-12-30"));
+            booking.setArrivalDate(arrivalDate);
+            booking.setLeaveDate(leaveDate);
+            int duraion = Period.between(arrivalDate,leaveDate).getDays();
+            Double totalCostAmount = duraion * hotel.getPrice();
+            booking.setTotalAmount(totalCostAmount);
+            hotelRepository.updateHotelAvailableRooms(this.findHotelById());
+            bookingRepository.createBookingToDB(booking);
+        }
     }
+
     public void deleteBooking() {
         int chosenId = Integer.parseInt(this.getUserInput("Please enter the Booking id to be removed"));
         bookingRepository.deleteBookingsFromDB(chosenId);

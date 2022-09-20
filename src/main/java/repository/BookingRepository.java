@@ -9,9 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.swing.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class BookingRepository {
 
@@ -72,16 +70,12 @@ public class BookingRepository {
 
             switch (userChoice) {
                 case 1:
-                    String inputArrival = JOptionPane.showInputDialog("Please enter new arrival date: MM-dd-yy");
-                    DateFormat inputFormatArrival = new SimpleDateFormat("MM-dd-yy");
-                    Date newDateArrival = inputFormatArrival.parse(inputArrival);
-                    foundBooking.setArrivalDate(newDateArrival);
+                    LocalDate newArrivalDate = LocalDate.parse(this.getUserInput("Please enter new arrival date in the following format 2022-12-30"));
+                    foundBooking.setArrivalDate(newArrivalDate);
                     break;
                 case 2:
-                    String inputLeaving = JOptionPane.showInputDialog("Please enter new leaving date: MM-dd-yy");
-                    DateFormat inputFormatLeaving = new SimpleDateFormat("MM-dd-yy");
-                    Date newDateLeaving = inputFormatLeaving.parse(inputLeaving);
-                    foundBooking.setLeaveDate(newDateLeaving);
+                    LocalDate newLeaveDate = LocalDate.parse(this.getUserInput("please enter your leaving date in the following format 2022-12-30"));
+                    foundBooking.setLeaveDate(newLeaveDate);
                     break;
                 case 3:
                     foundBooking.setTotalAmount(Double.parseDouble(this.getUserInput("Please enter new total price:")));
