@@ -38,7 +38,7 @@ public class ClientRepository {
         Client client = null;
         try {
             transaction = session.beginTransaction();
-            client = session.createQuery("FROM clients WHERE personalID = " + id, Client.class).getSingleResultOrNull()
+            client = session.createQuery("FROM clients WHERE personalID = " + id, Client.class).getSingleResultOrNull();
             session.remove(client);
             transaction.commit();
         } catch (Exception e) {
