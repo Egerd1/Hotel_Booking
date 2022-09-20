@@ -1,5 +1,6 @@
 package controller;
 
+import model.Bookings;
 import model.Client;
 import model.Hotel;
 import repository.BookingRepository;
@@ -17,6 +18,7 @@ public class Manager {
     //--------------------------CLIENT--------------------------------------
     public void createClient() {
         Client client = new Client();
+        client.setPersonalId(Integer.parseInt(this.getUserInput("Please enter your personal id code: ")));
         client.setFirstName(this.getUserInput("Please enter your name: "));
         client.setLastName(this.getUserInput("Please enter your last name: "));
         client.setAge(this.getUserInput("Please enter your age: "));
@@ -24,7 +26,7 @@ public class Manager {
     }
 
     public void deleteClient() {
-        int chosenId = Integer.parseInt(this.getUserInput("Please enter the client id to be removed"));
+        int chosenId = Integer.parseInt(this.getUserInput("Please enter the client personal id code to be removed"));
         clientRepository.deleteClientFromDB(chosenId);
     }
 
@@ -34,8 +36,13 @@ public class Manager {
     }
 
     public void findClientById() {
-        int chosenId = Integer.parseInt(this.getUserInput("To view client, please enter the client id"));
-        clientRepository.findClientFromDBById(chosenId);
+        Long chosenId = Long.valueOf(Integer.parseInt(this.getUserInput("To view client, please enter the client personal id")));
+        clientRepository.findClientByPersonalIdCode(chosenId);
+    }
+
+    public void findClientByName() {
+        String clientName = this.getUserInput("Enter the name of the customer you want to find");
+        clientRepository.findClientByFirstName(clientName);
     }
 
     public void viewAllMyClients() {
@@ -69,7 +76,7 @@ public class Manager {
 
     public void findHotelById() {
         int chosenId = Integer.parseInt(this.getUserInput("To view Hotel, please enter the Hotel id"));
-        clientRepository.findClientFromDBById(chosenId);
+        hotelRepository.findHotelFromDBById(chosenId);
     }
 
     public void viewAllMyHotels() {
@@ -83,6 +90,10 @@ public class Manager {
     }
 
     //----------------------------BOOKING----------------------------------------
+    public void createBooking() {
+        Bookings bookings = new Bookings();
+        bookingRepository.createBookingToDB(bookings);
+    }
     public void deleteBooking() {
         int chosenId = Integer.parseInt(this.getUserInput("Please enter the Booking id to be removed"));
         bookingRepository.deleteBookingsFromDB(chosenId);

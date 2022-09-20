@@ -5,8 +5,10 @@ public class Main {
         Manager manager = new Manager();
 //        manager.createClient();
 //        manager.updateClient();
-//        manager.findClientById();
+        manager.findClientById();
 //        manager.viewAllMyClients();
-        manager.updateBooking();
+//        manager.updateBooking();
+ //       manager.findClientByName();
+
     }
 }

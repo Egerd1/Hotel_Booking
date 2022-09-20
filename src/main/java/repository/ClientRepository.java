@@ -4,9 +4,11 @@ import model.Client;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRepository {
 
@@ -33,10 +35,10 @@ public class ClientRepository {
     public void deleteClientFromDB(int id) {
         Session session = factory.openSession();
         Transaction transaction = null;
-
+        Client client = null;
         try {
             transaction = session.beginTransaction();
-            Client client = session.find(Client.class, id);
+            client = session.createQuery("FROM clients WHERE personalID = " + id, Client.class).getSingleResultOrNull()
             session.remove(client);
             transaction.commit();
         } catch (Exception e) {
@@ -57,15 +59,21 @@ public class ClientRepository {
         try {
             transaction = session.beginTransaction();
             Client foundClient = session.find(Client.class, clientId);
-            int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what info you want to update:3\n" + " for firstName enter 1\n" + " for lastname enter 2\n" + " for age enter 3"));
-
+            int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what info you want to update:\n"
+                    + " for personal ID enter 1\n"
+                    + " for firstname enter 2\n"
+                    + " for lastname enter 3\n"
+                    + " for age enter 4"));
             if (userChoice == 1) {
+                int personalIdCode = Integer.parseInt(this.getUserInput("Please enter new personal ID code: "));
+                foundClient.setPersonalId(personalIdCode);
+            } else if (userChoice == 2) {
                 foundClient.setFirstName(this.getUserInput("Please enter new firstname: "));
-            } else if (userChoice == 2){
+            } else if (userChoice == 3) {
                 foundClient.setLastName(this.getUserInput("Please enter new lastname: "));
-            }else if (userChoice == 3){
+            } else if (userChoice == 4) {
                 foundClient.setAge(this.getUserInput("Please enter new age: "));
-            }else{
+            } else {
                 System.out.println("Something went wrong!");
                 System.exit(0);
             }
@@ -83,14 +91,19 @@ public class ClientRepository {
 
     }
 
-    public void findClientFromDBById(int id) {
+    public void findClientByPersonalIdCode(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
+        Client client = null;
 
         try {
             transaction = session.beginTransaction();
-            Client client = session.find(Client.class, id);
-            System.out.println(client);
+            client = session.createQuery("FROM clients WHERE personalID = " + id, Client.class).getSingleResultOrNull();
+            if (client != null) {
+                System.out.println("thanks for choosing us again " + client.getFirstName());
+            } else {
+                System.out.println("you don't have an account with us please follow steps to register in our system");
+            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -102,7 +115,35 @@ public class ClientRepository {
         }
     }
 
-    public ArrayList<Client> showAllMyClientsFromDB(){
+    public Client findClientByFirstName(String clientName) {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        Client client = null;
+        List<Client> allMyClients = null;
+        try {
+            transaction = session.beginTransaction();
+            Query<Client> myQuery = session.createQuery("FROM clients WHERE firstName =:firstName ", Client.class);
+            myQuery.setParameter("firstName", clientName);
+            allMyClients = myQuery.getResultList();
+            client = allMyClients.get(0);
+            if (client != null) {
+                System.out.println("thanks for choosing us again " + client.getFirstName());
+            } else {
+                System.out.println("you don't have an account with us please follow steps to register in our system");
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println(e.getClass() + " : " + e.getMessage());
+        } finally {
+            session.close();
+        }
+        return client;
+    }
+
+    public ArrayList<Client> showAllMyClientsFromDB() {
         Session session = factory.openSession();
         Transaction transaction = null;
         ArrayList<Client> myClients = null;

@@ -17,7 +17,7 @@ public class BookingRepository {
 
     private static SessionFactory factory = SessionManager.getFactory();
 
-    public void createBooking(Bookings booking) {
+    public void createBookingToDB(Bookings booking) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -35,7 +35,6 @@ public class BookingRepository {
         }
     }
 
-    // -------------------VAJA TEHA---------------
     public void deleteBookingsFromDB(int id) {
         Session session = factory.openSession();
         Transaction transaction = null;
