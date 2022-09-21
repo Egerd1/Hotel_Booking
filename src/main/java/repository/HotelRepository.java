@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class HotelRepository {
 
@@ -110,13 +110,13 @@ public class HotelRepository {
         return hotel;
     }
 
-    public ArrayList<Hotel> showAllMyHotelsFromDB() {
+    public List<Hotel> showAllMyHotelsFromDB() {
         Session session = factory.openSession();
         Transaction transaction = null;
-        ArrayList<Hotel> myHotels = null;
+        List<Hotel> myHotels = null;
         try {
             transaction = session.beginTransaction();
-            myHotels = (ArrayList<Hotel>) session.createQuery("FROM hotels", Hotel.class).getResultList();
+            myHotels = session.createQuery("FROM hotels", Hotel.class).getResultList();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

@@ -1,14 +1,9 @@
-import controller.Manager;
+import controller.ApplicationController;
 
 public class Main {
     public static void main(String[] args) {
-        Manager manager = new Manager();
-//        manager.createClient();
-//        manager.updateClient();
-        manager.findClientById();
-//        manager.viewAllMyClients();
-//        manager.updateBooking();
- //       manager.findClientByName();
 
+        ApplicationController applicationController = new ApplicationController();
+        applicationController.start();
     }
 }

@@ -7,7 +7,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientRepository {
@@ -144,13 +143,13 @@ public class ClientRepository {
         return client;
     }
 
-    public ArrayList<Client> showAllMyClientsFromDB() {
+    public List<Client> showAllMyClientsFromDB() {
         Session session = factory.openSession();
         Transaction transaction = null;
-        ArrayList<Client> myClients = null;
+        List<Client> myClients = null;
         try {
             transaction = session.beginTransaction();
-            myClients = (ArrayList<Client>) session.createQuery("FROM clients", Client.class).getResultList();
+            myClients = session.createQuery("FROM clients", Client.class).getResultList();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

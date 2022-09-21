@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.util.List;
 
 public class BookingRepository {
 
@@ -113,6 +114,26 @@ public class BookingRepository {
         } finally {
             session.close();
         }
+    }
+
+    public List<Bookings> showAllMyBookingsFromDB() {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        List<Bookings> myBookings = null;
+        try {
+            transaction = session.beginTransaction();
+            myBookings = session.createQuery("FROM bookings", Bookings.class).getResultList();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println(e.getClass() + " : " + e.getMessage());
+        } finally {
+            session.close();
+        }
+
+        return myBookings;
     }
 
     private String getUserInput(String message) {
