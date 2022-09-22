@@ -49,7 +49,7 @@ public class HotelRepository {
         }
     }
 
-    public void updateHotelFromDB(int chosenId) {
+    public void updateHotelFromDB(Long chosenId) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -97,7 +97,6 @@ public class HotelRepository {
         try {
             transaction = session.beginTransaction();
             hotel = session.find(Hotel.class, id);
-            System.out.println(hotel);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

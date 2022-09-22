@@ -37,7 +37,7 @@ public class ClientRepository {
         Client client = null;
         try {
             transaction = session.beginTransaction();
-            client = session.createQuery("FROM clients WHERE personalID = " + id, Client.class).getSingleResultOrNull();
+            client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
             session.remove(client);
             transaction.commit();
         } catch (Exception e) {
@@ -48,7 +48,6 @@ public class ClientRepository {
         } finally {
             session.close();
         }
-        System.out.println("You deleted client with id " + id);
     }
 
     public void updateClientFromDB(Long clientId) {
@@ -97,11 +96,11 @@ public class ClientRepository {
 
         try {
             transaction = session.beginTransaction();
-            client = session.createQuery("FROM clients WHERE personalID = " + id, Client.class).getSingleResultOrNull();
+            client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
             if (client != null) {
-                System.out.println("thanks for choosing us again " + client.getFirstName());
+                System.out.println("Hello again " + client.getFirstName());
             } else {
-                System.out.println("you don't have an account with us please follow steps to register in our system");
+                System.out.println("You don't have an account with us please follow steps to register in our system");
             }
             transaction.commit();
         } catch (Exception e) {
@@ -127,9 +126,9 @@ public class ClientRepository {
             allMyClients = myQuery.getResultList();
             client = allMyClients.get(0);
             if (client != null) {
-                System.out.println("thanks for choosing us again " + client.getFirstName());
+                System.out.println(client.getFirstName());
             } else {
-                System.out.println("you don't have an account with us please follow steps to register in our system");
+                System.out.println("Sorry, but you are not in our system");
             }
             transaction.commit();
         } catch (Exception e) {

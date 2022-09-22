@@ -1,9 +1,12 @@
-import controller.ApplicationController;
+import controller.Manager;
 
 public class Main {
     public static void main(String[] args) {
 
-        ApplicationController applicationController = new ApplicationController();
-        applicationController.start();
+        Manager manager = new Manager();
+        manager.updateBooking();
+
+//        ApplicationController applicationController = new ApplicationController();
+//        applicationController.start();
     }
 }

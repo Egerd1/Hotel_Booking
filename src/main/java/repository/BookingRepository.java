@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 public class BookingRepository {
@@ -63,39 +64,37 @@ public class BookingRepository {
             int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what Booking info you want to update:\n"
                     + "Arrival Date enter 1\n"
                     + "Leaving Date enter 2\n"
-                    + "Total price amount enter 3\n"
-                    + "To change client enter 4\n"
-                    + "To change hotel enter 5\n"
-                    + "To make more updates enter 6\n"
-                    + "To EXIT enter 7"));
+                    + "To change client enter 3\n"
+                    + "To change hotel enter 4\n"
+                    + "To make more updates enter 5\n"
+                    + "To EXIT enter 6"));
 
             switch (userChoice) {
                 case 1:
                     LocalDate newArrivalDate = LocalDate.parse(this.getUserInput("Please enter new arrival date in the following format 2022-12-30"));
                     foundBooking.setArrivalDate(newArrivalDate);
+                    foundBooking.setTotalAmount(Period.between(foundBooking.getArrivalDate(),foundBooking.getLeaveDate()).getDays() * foundBooking.getHotel().getPrice());
                     break;
                 case 2:
                     LocalDate newLeaveDate = LocalDate.parse(this.getUserInput("please enter your leaving date in the following format 2022-12-30"));
                     foundBooking.setLeaveDate(newLeaveDate);
+                    foundBooking.setTotalAmount(Period.between(foundBooking.getArrivalDate(),foundBooking.getLeaveDate()).getDays() * foundBooking.getHotel().getPrice());
                     break;
                 case 3:
-                    foundBooking.setTotalAmount(Double.parseDouble(this.getUserInput("Please enter new total price:")));
-                    break;
-                case 4:
                     int myClientId = Integer.parseInt(this.getUserInput("Please enter new client id:"));
                     Client foundClient = session.find(Client.class, myClientId);
                     foundBooking.setClient(foundClient);
                     break;
-                case 5:
+                case 4:
                     int myHotelId = Integer.parseInt(this.getUserInput("Please enter new hotel id:"));
                     Hotel foundHotel = session.find(Hotel.class, myHotelId);
                     foundBooking.setHotel(foundHotel);
                     break;
-                case 6:
+                case 5:
                     Manager newManager = new Manager();
                     newManager.updateBooking();
                     break;
-                case 7:
+                case 6:
                     System.exit(0);
                     break;
                 default:

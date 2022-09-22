@@ -34,11 +34,11 @@ public class Manager {
     }
 
     public void updateClient() {
-        Long chosenId = (long) Integer.parseInt(this.getUserInput("Please enter the client id to be updated"));
+        Long chosenId = (long) Integer.parseInt(this.getUserInput("Please enter the client id from database to be updated"));
         clientRepository.updateClientFromDB(chosenId);
     }
 
-    public void findClientById() {
+    public void findClientByPersonalId() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("To view client, please enter the client personal id"));
         clientRepository.findClientByPersonalIdCode(chosenId);
     }
@@ -49,7 +49,7 @@ public class Manager {
     }
 
     public void viewAllMyClients() {
-            System.out.println(clientRepository.showAllMyClientsFromDB());
+        System.out.println(clientRepository.showAllMyClientsFromDB());
     }
 
     //------------------------------HOTEL-------------------------------------------
@@ -64,22 +64,22 @@ public class Manager {
 
     public void deleteHotel() {
         int chosenId = Integer.parseInt(this.getUserInput("Please enter the Hotel id to be removed"));
-        clientRepository.deleteClientFromDB(chosenId);
+        hotelRepository.deleteHotelFromDB(chosenId);
     }
 
     public void updateHotel() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("Please enter the Hotel id to be updated"));
-        clientRepository.updateClientFromDB(chosenId);
+        hotelRepository.updateHotelFromDB(chosenId);
     }
 
     public int findHotelById() {
-        int chosenId = Integer.parseInt(this.getUserInput("To view Hotel, please enter the Hotel id"));
+        int chosenId = Integer.parseInt(this.getUserInput("Please enter the Hotel id"));
         hotelRepository.findHotelFromDBById(chosenId);
         return chosenId;
     }
 
     public void viewAllMyHotels() {
-            System.out.println(clientRepository.showAllMyClientsFromDB());
+        System.out.println(hotelRepository.showAllMyHotelsFromDB());
 
     }
 
@@ -88,24 +88,24 @@ public class Manager {
         Long userIdCode = Long.valueOf(this.getUserInput("Please enter your personal ID code"));
         Client foundClient = clientRepository.findClientByPersonalIdCode(userIdCode);
         if (foundClient == null) {
-           foundClient = this.createClient();
+            foundClient = this.createClient();
         }
-        createNewBookingToHotel(foundClient);
+        createNewBooking(foundClient);
     }
 
-    public void createNewBookingToHotel(Client client) {
+    private void createNewBooking(Client client) {
         Bookings booking = new Bookings();
-        Hotel hotel = hotelRepository.findHotelFromDBById(this.findHotelById());
+        System.out.println(hotelRepository.showAllMyHotelsFromDB());
+        int userChoice = Integer.parseInt(this.getUserInput("Please choose your hotel from following hotel list"));
+        Hotel hotel = hotelRepository.findHotelFromDBById(userChoice);
         booking.setHotel(hotel);
         booking.setClient(client);
         LocalDate arrivalDate = LocalDate.parse(this.getUserInput("please enter your arrival date in the following format 2022-12-30"));
         LocalDate leaveDate = LocalDate.parse(this.getUserInput("please enter your leaving date in the following format 2022-12-30"));
         booking.setArrivalDate(arrivalDate);
         booking.setLeaveDate(leaveDate);
-        int duration = Period.between(arrivalDate, leaveDate).getDays();
-        Double totalCostAmount = duration * hotel.getPrice();
-        booking.setTotalAmount(totalCostAmount);
-        hotelRepository.updateHotelAvailableRooms(this.findHotelById());
+        booking.setTotalAmount(Period.between(booking.getArrivalDate(),booking.getLeaveDate()).getDays() * booking.getHotel().getPrice());
+        hotelRepository.updateHotelAvailableRooms(userChoice);
         bookingRepository.createBookingToDB(booking);
 
     }
@@ -119,6 +119,7 @@ public class Manager {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("Please enter the Booking id to be updated"));
         bookingRepository.updateBookingFromDB(chosenId);
     }
+
     public void viewAllMyBookings() {
         System.out.println(bookingRepository.showAllMyBookingsFromDB());
     }
