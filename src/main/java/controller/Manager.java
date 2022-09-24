@@ -18,15 +18,6 @@ public class Manager {
     private final BookingRepository bookingRepository = new BookingRepository();
 
     //--------------------------CLIENT--------------------------------------
-    public Client createClient() {
-        Client client = new Client();
-        client.setPersonalId(Integer.parseInt(this.getUserInput("Please enter your personal id code: ")));
-        client.setFirstName(this.getUserInput("Please enter your name: "));
-        client.setLastName(this.getUserInput("Please enter your last name: "));
-        client.setAge(this.getUserInput("Please enter your age: "));
-        clientRepository.createClient(client);
-        return client;
-    }
 
     public void deleteClient() {
         int chosenId = Integer.parseInt(this.getUserInput("Please enter the client personal id code to be removed"));
@@ -35,7 +26,7 @@ public class Manager {
 
     public void updateClient() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("Please enter the client id from database to be updated"));
-        clientRepository.updateClientFromDB(chosenId);
+        clientRepository.updateClientInfo(chosenId);
     }
 
     public void findClientByPersonalId() {
@@ -84,7 +75,7 @@ public class Manager {
     }
 
     //----------------------------BOOKING----------------------------------------
-    public void createBooking() {
+    public void verifyClient() {
         Long userIdCode = Long.valueOf(this.getUserInput("Please enter your personal ID code"));
         Client foundClient = clientRepository.findClientByPersonalIdCode(userIdCode);
         if (foundClient == null) {

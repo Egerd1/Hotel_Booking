@@ -13,7 +13,7 @@ public class ClientRepository {
 
     private static SessionFactory factory = SessionManager.getFactory();
 
-    public void createClient(Client client) {
+    public Client createClient(Client client) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -29,6 +29,7 @@ public class ClientRepository {
         } finally {
             session.close();
         }
+        return client;
     }
 
     public void deleteClientFromDB(int id) {
@@ -50,7 +51,7 @@ public class ClientRepository {
         }
     }
 
-    public void updateClientFromDB(Long clientId) {
+    public void updateClientInfo(Long clientId) { // Not id but personal id
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -63,7 +64,7 @@ public class ClientRepository {
                     + " for lastname enter 3\n"
                     + " for age enter 4"));
             if (userChoice == 1) {
-                int personalIdCode = Integer.parseInt(this.getUserInput("Please enter new personal ID code: "));
+                long personalIdCode = Long.parseLong(this.getUserInput("Please enter new personal ID code: "));
                 foundClient.setPersonalId(personalIdCode);
             } else if (userChoice == 2) {
                 foundClient.setFirstName(this.getUserInput("Please enter new firstname: "));

@@ -81,12 +81,12 @@ public class BookingRepository {
                     foundBooking.setTotalAmount(Period.between(foundBooking.getArrivalDate(),foundBooking.getLeaveDate()).getDays() * foundBooking.getHotel().getPrice());
                     break;
                 case 3:
-                    int myClientId = Integer.parseInt(this.getUserInput("Please enter new client id:"));
+                    int myClientId = Integer.parseInt(this.getUserInput("Please enter new client id:")); // also personal id, if there are no client I make new client
                     Client foundClient = session.find(Client.class, myClientId);
                     foundBooking.setClient(foundClient);
                     break;
                 case 4:
-                    int myHotelId = Integer.parseInt(this.getUserInput("Please enter new hotel id:"));
+                    int myHotelId = Integer.parseInt(this.getUserInput("Please enter new hotel id:")); // show the hotel list
                     Hotel foundHotel = session.find(Hotel.class, myHotelId);
                     foundBooking.setHotel(foundHotel);
                     break;

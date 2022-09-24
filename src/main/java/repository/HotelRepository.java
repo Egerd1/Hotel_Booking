@@ -136,7 +136,7 @@ public class HotelRepository {
             transaction = session.beginTransaction();
             Hotel hotel = session.find(Hotel.class, id);
             if (hotel.getNumberOfRooms() > 0) {
-                hotel.setNumberOfRooms(hotel.getNumberOfRooms() - 1);
+                hotel.setNumberOfRooms((hotel.getNumberOfRooms()) - 1);
             } else {
                 System.out.println("Sorry, but we don't have available rooms!");
             }

@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class ApplicationController {
 
-    private final Manager manager = new Manager();
+    private final ClientController clientController = new ClientController();
 
 
     public void start() {
@@ -26,13 +26,13 @@ public class ApplicationController {
 
         switch (userChoice) {
             case "1":
-                this.manager.createClient();
+                this.clientController.createClient();
                 break;
             case "2":
-                this.manager.updateClient();
+                this.clientController.updateClient();
                 break;
             case "3":
-                this.manager.viewAllMyClients();
+                this.clientController.viewAllMyClients();
                 break;
             case "4":
                 this.manager.createHotel();
