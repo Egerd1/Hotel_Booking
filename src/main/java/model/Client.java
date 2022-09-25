@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity(name = "clients")
 public class Client {
 
@@ -21,4 +20,14 @@ public class Client {
     private String firstName;
     private String lastName;
     private String age;
+
+    @Override
+    public String toString() {
+        return
+                "id =" + id  +
+                        " PersonalId= " + personalId  +
+                        " First Name= " + firstName +
+                        " Last Name= " + lastName  +
+                        " Age=" + age +'\n';
+    }
 }

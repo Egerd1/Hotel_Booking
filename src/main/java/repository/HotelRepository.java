@@ -49,34 +49,13 @@ public class HotelRepository {
         }
     }
 
-    public void updateHotelFromDB(Long chosenId) {
+    public void updateHotelFromDB(Hotel hotel) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
-            Hotel foundHotel = session.find(Hotel.class, chosenId);
-            int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what info you want to update:\n"
-                    + " for address enter 1\n"
-                    + " for Hotel name enter 2\n"
-                    + " for number of rooms enter 3\n"
-                    + " for change price enter 4\n"));
-
-            if (userChoice == 1) {
-                foundHotel.setAddress(this.getUserInput("Please enter new address: "));
-            } else if (userChoice == 2) {
-                foundHotel.setHotelName(this.getUserInput("Please enter new Hotel name: "));
-            } else if (userChoice == 3) {
-                int numberOfRooms = Integer.parseInt(this.getUserInput("Please enter new number of rooms: "));
-                foundHotel.setNumberOfRooms(numberOfRooms);
-            } else if (userChoice == 4) {
-                Double pricePerDay = Double.parseDouble(this.getUserInput("Please enter new price: "));
-                foundHotel.setPrice(pricePerDay);
-            } else {
-                System.out.println("Something went wrong!");
-                System.exit(0);
-            }
-            session.merge(foundHotel); // merge update info
+            session.merge(hotel); // merge update info
             transaction.commit();
 
         } catch (Exception e) {
@@ -90,7 +69,7 @@ public class HotelRepository {
 
     }
 
-    public Hotel findHotelFromDBById(int id) {
+    public Hotel findHotelFromDBById(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Hotel hotel = null;
@@ -129,7 +108,7 @@ public class HotelRepository {
         return myHotels;
     }
 
-    public void updateHotelAvailableRooms(int id) {
+    public void updateHotelAvailableRooms(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         try {
