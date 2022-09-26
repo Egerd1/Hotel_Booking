@@ -24,10 +24,10 @@ public class Client {
     @Override
     public String toString() {
         return
-                "id =" + id  +
-                        " PersonalId= " + personalId  +
-                        " First Name= " + firstName +
-                        " Last Name= " + lastName  +
-                        " Age=" + age +'\n';
+                "PersonalId= " + personalId +
+                        "First Name= " + firstName +
+                        "Last Name= " + lastName +
+                        "Age= " + age + '\n'
+                ;
     }
 }
