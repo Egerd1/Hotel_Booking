@@ -55,8 +55,10 @@ public class HotelController {
         List<Hotel> hotels = hotelRepository.showAllMyHotelsFromDB();
         System.out.println(hotels);
 //        hotels.forEach(System.out::println);
-
-
+    }
+    public Hotel findHotelById() {
+        Long chosenId = (long) Integer.parseInt(this.getUserInput("To view Hotel, please enter the Hotel id"));
+        return hotelRepository.findHotelFromDBById(chosenId);
     }
 
     private String getUserInput(String message) {

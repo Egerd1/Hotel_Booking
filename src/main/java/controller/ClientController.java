@@ -62,4 +62,5 @@ public class ClientController {
     private String getUserInput(String message) {
         return JOptionPane.showInputDialog(message);
     }
+
 }
