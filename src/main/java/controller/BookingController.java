@@ -109,7 +109,8 @@ public class BookingController {
     }
 
     public void viewAllMyBookings() {
-        System.out.println(bookingRepository.showAllMyBookingsFromDB());
+        JOptionPane.showInputDialog(bookingRepository.showAllMyBookingsFromDB());
+//        System.out.println(bookingRepository.showAllMyBookingsFromDB());
     }
     public Bookings findBookingById() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("To view booking, please enter the booking id"));
