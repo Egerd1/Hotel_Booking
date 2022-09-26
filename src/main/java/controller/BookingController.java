@@ -35,32 +35,24 @@ public class BookingController {
         System.out.println(hotelRepository.showAllMyHotelsFromDB());
         Long userChoice = Long.valueOf(this.getUserInput("Please choose your hotel from following hotel list"));
         Hotel hotel = hotelRepository.findHotelFromDBById(userChoice);
-        if (hotel.getNumberOfRooms()>0){
+        if (hotel.getNumberOfRooms() > 0) {
             booking.setHotel(hotel);
             booking.setClient(verifyClient());
-            JDateChooser newDateChooser = new JDateChooser();
-            String message = "Please choose your date";
-            Object[] params = {message,newDateChooser};
-            JOptionPane.showConfirmDialog(null,params,"Start date", JOptionPane.PLAIN_MESSAGE);
-            String s="";
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            s=sdf.format(((JDateChooser)params[1]).getDate());
-            System.out.println(s);
-            LocalDate newArrivalDate = LocalDate.parse(s);
-           // LocalDate arrivalDate = LocalDate.parse(this.getUserInput("Please enter your arrival date in the following format 2022-12-30"));
-            LocalDate leaveDate = LocalDate.parse(this.getUserInput("Please enter your leaving date in the following format 2022-12-30"));
-            booking.setArrivalDate(newArrivalDate);
+            LocalDate arrivalDate = this.getDateFromCustomer("Arrival Date");
+            //LocalDate arrivalDate = LocalDate.parse(this.getUserInput("please enter your arrival date in the following format 2022-12-30"));
+            LocalDate leaveDate = this.getDateFromCustomer("Leave Date");
+            booking.setArrivalDate(arrivalDate);
             booking.setLeaveDate(leaveDate);
-            booking.setTotalAmount(Period.between(booking.getArrivalDate(),booking.getLeaveDate()).getDays() * booking.getHotel().getPrice());
+            booking.setTotalAmount(Period.between(booking.getArrivalDate(), booking.getLeaveDate()).getDays() * booking.getHotel().getPrice());
             hotelRepository.updateHotelAvailableRooms(userChoice);
             bookingRepository.createBookingToDB(booking);
-        }else {
-            System.out.println("Sorry this hotel does not have available rooms");
+        } else {
+            System.out.println("Sorry this hotel does not have available room");
         }
 
 
     }
+
     public void deleteBooking() {
         int chosenId = Integer.parseInt(this.getUserInput("Please enter the Booking id to be removed"));
         bookingRepository.deleteBookingsFromDB(chosenId);
@@ -79,19 +71,19 @@ public class BookingController {
 
         switch (userChoice) {
             case 1:
-                LocalDate newArrivalDate = LocalDate.parse(this.getUserInput("Please enter new arrival date in the following format 2022-12-30"));
+                LocalDate newArrivalDate = this.getDateFromCustomer("New Arrival Date");
                 updatedBooking.setArrivalDate(newArrivalDate);
-                updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(),updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
+                updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
                 break;
             case 2:
-                LocalDate newLeaveDate = LocalDate.parse(this.getUserInput("please enter your leaving date in the following format 2022-12-30"));
+                LocalDate newLeaveDate = this.getDateFromCustomer("New Leave Date");
                 updatedBooking.setLeaveDate(newLeaveDate);
-                updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(),updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
+                updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
                 break;
             case 3:
                 Long myClientId = Long.valueOf(this.getUserInput("Please enter new client personal id:"));
                 Client foundClient = clientRepository.findClientByPersonalIdCode(myClientId);
-                if (foundClient == null){
+                if (foundClient == null) {
                     foundClient = clientController.createClient();
                 }
                 updatedBooking.setClient(foundClient);
@@ -127,4 +119,17 @@ public class BookingController {
     private String getUserInput(String message) {
         return JOptionPane.showInputDialog(message);
     }
+
+    private LocalDate getDateFromCustomer(String arrivalOrLeaveDate) {
+        JDateChooser jdc = new JDateChooser();
+        String message = "Please choose dates from the calendar ";
+        Object[] params = {message, jdc};
+        JOptionPane.showConfirmDialog(null, params, arrivalOrLeaveDate, JOptionPane.PLAIN_MESSAGE);
+        String s = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        s = sdf.format(((JDateChooser) params[1]).getDate());
+        LocalDate localDate = LocalDate.parse(s);
+        return localDate;
+    }
+
 }
