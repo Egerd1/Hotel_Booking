@@ -25,9 +25,9 @@ public class Client {
     public String toString() {
         return
                 "PersonalId= " + personalId +
-                        "First Name= " + firstName +
-                        "Last Name= " + lastName +
-                        "Age= " + age + '\n'
+                        " First Name= " + firstName +
+                        " Last Name= " + lastName +
+                        " Age= " + age + '\n'
                 ;
     }
 }
