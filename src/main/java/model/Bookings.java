@@ -28,12 +28,12 @@ public class Bookings {
     @Override
     public String toString() {
         return
-                "id= " + id +
-                        " arrivalDate= " + arrivalDate +
-                        " leaveDate= " + leaveDate +
-                        " client= " + client +
-                        " hotel= " + hotel +
-                        " totalAmount= " + totalAmount +"\n"
+                " *** Id= " + id +
+                        "   ArrivalDate= " + arrivalDate +
+                        "   LeaveDate= " + leaveDate +
+                        "   Client= " + client +
+                        "   Hotel= " + hotel +
+                        "   TotalAmount= " + totalAmount +"\n"
                 ;
     }
 

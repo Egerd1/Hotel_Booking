@@ -4,6 +4,7 @@ import model.Hotel;
 import repository.HotelRepository;
 
 import javax.swing.*;
+import java.util.List;
 
 public class HotelController {
     private  final HotelRepository hotelRepository = new HotelRepository();
@@ -51,7 +52,16 @@ public class HotelController {
     }
 
     public void displayAllHotels() {
-        JOptionPane.showInputDialog(hotelRepository.showAllMyHotelsFromDB());
+        String myText;
+        List<Hotel> myHotels;
+        myHotels = hotelRepository.showAllMyHotelsFromDB();
+        StringBuilder builder = new StringBuilder();
+        for (Hotel h : myHotels) {
+            builder.append(h);
+        }
+        myText = builder.toString();
+
+        JOptionPane.showMessageDialog(null, myText);
 //        List<Hotel> hotels = hotelRepository.showAllMyHotelsFromDB();
 //        System.out.println(hotels);
 // --------------------------------------

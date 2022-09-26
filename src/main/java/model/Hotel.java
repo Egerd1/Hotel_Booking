@@ -24,11 +24,11 @@ public class Hotel {
     @Override
     public String toString() {
         return
-                "id= " + id +
-                        " hotelName='" + hotelName +
-                        " address='" + address +
-                        " number Of Rooms=" + numberOfRooms +
-                        " price=" + price + '\n'
+                "*** Id= " + id +
+                        "   HotelName= " + hotelName +
+                        "   Address= " + address +
+                        "   Number Of Rooms= " + numberOfRooms +
+                        "   Price per day= " + price + '\n'
                 ;
     }
 

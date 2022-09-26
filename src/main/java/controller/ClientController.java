@@ -4,6 +4,7 @@ import model.Client;
 import repository.ClientRepository;
 
 import javax.swing.*;
+import java.util.List;
 
 public class ClientController {
 
@@ -55,7 +56,16 @@ public class ClientController {
     }
 
     public void viewAllMyClients() {
-        JOptionPane.showInputDialog(clientRepository.showAllMyClientsFromDB());
+        String myText;
+        List<Client> myClients;
+        myClients = clientRepository.showAllMyClientsFromDB();
+        StringBuilder builder = new StringBuilder();
+        for (Client c : myClients) {
+            builder.append(c);
+        }
+        myText = builder.toString();
+
+        JOptionPane.showMessageDialog(null, myText);
 //        System.out.println(clientRepository.showAllMyClientsFromDB());
     }
 

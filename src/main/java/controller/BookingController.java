@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 public class BookingController {
 
@@ -109,7 +110,16 @@ public class BookingController {
     }
 
     public void viewAllMyBookings() {
-        JOptionPane.showInputDialog(bookingRepository.showAllMyBookingsFromDB());
+        String myText;
+        List<Bookings> myBookings;
+        myBookings = bookingRepository.showAllMyBookingsFromDB();
+        StringBuilder builder = new StringBuilder();
+        for (Bookings b : myBookings) {
+            builder.append(b);
+        }
+        myText = builder.toString();
+
+        JOptionPane.showMessageDialog(null, myText);
 //        System.out.println(bookingRepository.showAllMyBookingsFromDB());
     }
     public Bookings findBookingById() {
