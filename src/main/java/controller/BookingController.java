@@ -22,18 +22,22 @@ public class BookingController {
     private final ClientController clientController = new ClientController();
     private final HotelController hotelController = new HotelController();
 
+
     public Client verifyClient() {
         Long userIdCode = Long.valueOf(this.getUserInput("Please enter your personal ID code"));
         Client foundClient = clientRepository.findClientByPersonalIdCode(userIdCode);
         if (foundClient == null) {
             foundClient = clientController.createClient();
         }
+        if (foundClient.getAge() < 18) {
+            JOptionPane.showMessageDialog(null, "Sorry but you are too young to book a room");
+            this.createNewBooking();
+        }
         return foundClient;
     }
 
     public void createNewBooking() {
         Bookings booking = new Bookings();
-        System.out.println(hotelRepository.showAllMyHotelsFromDB());
         Long userChoice = Long.valueOf(this.getUserInput("Please choose your hotel from following hotel list"));
         Hotel hotel = hotelRepository.findHotelFromDBById(userChoice);
         if (hotel.getNumberOfRooms() > 0) {
@@ -48,7 +52,7 @@ public class BookingController {
             hotelRepository.updateHotelAvailableRooms(userChoice);
             bookingRepository.createBookingToDB(booking);
         } else {
-            System.out.println("Sorry this hotel does not have available room");
+            JOptionPane.showMessageDialog(null, "Sorry this hotel does not have available room");
         }
 
 
@@ -102,7 +106,8 @@ public class BookingController {
                 System.exit(0);
                 break;
             default:
-                System.out.println("Choose an option from the list");
+                JOptionPane.showMessageDialog(null, "Choose an option from the list");
+
                 break;
         }
 
@@ -122,6 +127,7 @@ public class BookingController {
         JOptionPane.showMessageDialog(null, myText);
 //        System.out.println(bookingRepository.showAllMyBookingsFromDB());
     }
+
     public Bookings findBookingById() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("To view booking, please enter the booking id"));
         return bookingRepository.findBookingFromDBById(chosenId);

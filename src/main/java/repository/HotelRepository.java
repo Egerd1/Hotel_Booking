@@ -117,7 +117,7 @@ public class HotelRepository {
             if (hotel.getNumberOfRooms() > 0) {
                 hotel.setNumberOfRooms((hotel.getNumberOfRooms()) - 1);
             } else {
-                System.out.println("Sorry, but we don't have available rooms!");
+                JOptionPane.showMessageDialog(null, "Sorry, but we don't have available rooms!");
             }
             session.merge(hotel);
             transaction.commit();

@@ -78,9 +78,9 @@ public class ClientRepository {
             transaction = session.beginTransaction();
             client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
             if (client != null) {
-                System.out.println("Hello again " + client.getFirstName());
+                JOptionPane.showMessageDialog(null, "Hello again " + client.getFirstName());
             } else {
-                System.out.println("You don't have an account with us please follow steps to register in our system");
+                JOptionPane.showMessageDialog(null,"You don't have an account with us please follow steps to register in our system");
             }
             transaction.commit();
         } catch (Exception e) {

@@ -26,40 +26,47 @@ public class UserController implements ActionListener {
         button.setText("Create client");
         button.setPreferredSize(new Dimension(250, 40));
         panel.add(button);
+        button.setBackground(Color.ORANGE);
         button.addActionListener(this);
 
         button1 = new JButton();
         button1.setText("Update client");
         button1.setPreferredSize(new Dimension(250, 40));
         panel.add(button1);
+        button1.setBackground(Color.ORANGE);
         button1.addActionListener(this);
 
         button2 = new JButton();
         button2.setText("View all Hotels");
         button2.setPreferredSize(new Dimension(250, 40));
         panel.add(button2);
+        button2.setBackground(Color.ORANGE);
         button2.addActionListener(this);
 
         button3 = new JButton();
         button3.setText("Create Booking");
         button3.setPreferredSize(new Dimension(250, 40));
         panel.add(button3);
+        button3.setBackground(Color.ORANGE);
         button3.addActionListener(this);
 
         button4 = new JButton();
         button4.setText("Update Booking");
         button4.setPreferredSize(new Dimension(250, 40));
         panel.add(button4);
+        button4.setBackground(Color.ORANGE);
         button4.addActionListener(this);
 
         button5 = new JButton();
         button5.setText("EXIT");
-        button5.setPreferredSize(new Dimension(100, 40));
+        button5.setPreferredSize(new Dimension(250, 40));
         panel.add(button5);
+        button5.setBackground(Color.ORANGE);
         button5.addActionListener(this);
 
         frame.add(panel);
-        frame.setSize(300, 350);
+        panel.setBackground(Color.GRAY);
+        frame.setSize(400, 350);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

@@ -16,7 +16,7 @@ public class ClientController {
         client.setPersonalId(Long.parseLong(this.getUserInput("Please enter your personal id code: ")));
         client.setFirstName(this.getUserInput("Please enter your name: "));
         client.setLastName(this.getUserInput("Please enter your last name: "));
-        client.setAge(this.getUserInput("Please enter your age: "));
+        client.setAge(Integer.parseInt(this.getUserInput("Please enter your age: ")));
 
         return clientRepository.createClientToDB(client);
     }
@@ -42,9 +42,9 @@ public class ClientController {
         } else if (userChoice == 3) {
             foundClient.setLastName(this.getUserInput("Please enter new lastname: "));
         } else if (userChoice == 4) {
-            foundClient.setAge(this.getUserInput("Please enter new age: "));
+            foundClient.setAge(Integer.parseInt(this.getUserInput("Please enter new age: ")));
         } else {
-            System.out.println("Something went wrong!");
+            JOptionPane.showMessageDialog(null, "Something went wrong!");
             System.exit(0);
         }
         clientRepository.updateClientInfo(foundClient);

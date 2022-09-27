@@ -38,7 +38,7 @@ public class HotelController {
             Double pricePerDay = Double.parseDouble(this.getUserInput("Please enter new price: "));
             foundHotel.setPrice(pricePerDay);
         } else {
-            System.out.println("Something went wrong!");
+            JOptionPane.showMessageDialog(null, "Something went wrong!");
             System.exit(0);
         }
         hotelRepository.updateHotelFromDB(foundHotel);
