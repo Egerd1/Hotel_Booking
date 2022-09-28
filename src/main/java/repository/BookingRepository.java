@@ -1,9 +1,11 @@
 package repository;
 
 import model.Bookings;
+import model.Client;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import javax.swing.*;
 import java.util.List;
@@ -30,7 +32,7 @@ public class BookingRepository {
         }
     }
 
-    public void deleteBookingsFromDB(int id) {
+    public void deleteBookingsFromDB(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -96,6 +98,30 @@ public class BookingRepository {
         try {
             transaction = session.beginTransaction();
             booking = session.find(Bookings.class, id);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println(e.getClass() + " : " + e.getMessage());
+        } finally {
+            session.close();
+        }
+        return booking;
+    }
+    public List<Bookings> findBookingsFromDBByPersonalId(Long id) {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        List<Bookings> booking = null;
+        Client client = null;
+        ClientRepository clientRepository = new ClientRepository();
+        try {
+            transaction = session.beginTransaction();
+            client = clientRepository.findClientByPersonalIdCode(id);
+            Query<Bookings> query = session.createQuery("FROM bookings WHERE client =:client",Bookings.class);
+            query.setParameter("client",client);
+            booking=query.getResultList();
+            //booking =session.createQuery("FROM bookings WHERE client ="+client,Bookings.class).getSingleResultOrNull();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

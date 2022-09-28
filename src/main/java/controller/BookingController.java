@@ -30,7 +30,7 @@ public class BookingController {
             foundClient = clientController.createClient();
         }
         if (foundClient.getAge() < 18) {
-            JOptionPane.showMessageDialog(null, "Sorry but you are too young to book a room");
+            JOptionPane.showMessageDialog(null, "Sorry, but you have to be 18 years old to book a room");
             this.createNewBooking();
         }
         return foundClient;
@@ -59,7 +59,7 @@ public class BookingController {
     }
 
     public void deleteBooking() {
-        int chosenId = Integer.parseInt(this.getUserInput("Please enter the Booking id to be removed"));
+        Long chosenId = Long.valueOf((this.getUserInput("Please enter the Booking id to be removed")));
         bookingRepository.deleteBookingsFromDB(chosenId);
     }
 

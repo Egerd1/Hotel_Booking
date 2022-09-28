@@ -22,7 +22,7 @@ public class ClientController {
     }
 
     public void deleteClient() {
-        int chosenId = Integer.parseInt(this.getUserInput("Please enter the client personal id code to be removed"));
+        Long chosenId = Long.parseLong(this.getUserInput("Please enter the client personal id code to be removed"));
         clientRepository.deleteClientFromDB(chosenId);
     }
 

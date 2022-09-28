@@ -1,5 +1,6 @@
 package repository;
 
+import model.Bookings;
 import model.Client;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,20 +32,26 @@ public class ClientRepository {
         return client;
     }
 
-    public void deleteClientFromDB(int id) {
+    public void deleteClientFromDB(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Client client = null;
+        List<Bookings> booking=null;
+        BookingRepository bookingRepository = new BookingRepository();
         try {
             transaction = session.beginTransaction();
+            booking = bookingRepository.findBookingsFromDBByPersonalId(id);
+            if(booking!= null){
+                booking.forEach(b->{bookingRepository.deleteBookingsFromDB(b.getId());});
+            }
             client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
             session.remove(client);
             transaction.commit();
+
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
         }
