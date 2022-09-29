@@ -1,14 +1,18 @@
 package controller;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import model.Client;
 import repository.ClientRepository;
 
 import javax.swing.*;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientController {
 
-   private final ClientRepository clientRepository = new ClientRepository();
+   private ClientRepository clientRepository = new ClientRepository();
 
 
     public Client createClient() {
@@ -50,9 +54,9 @@ public class ClientController {
         clientRepository.updateClientInfo(foundClient);
     }
 
-    public Client findClientByPersonalId() {
+    public void findClientByPersonalId() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("To view client, please enter the client personal id"));
-        return clientRepository.findClientByPersonalIdCode(chosenId);
+        clientRepository.findClientByPersonalIdCode(chosenId);
     }
 
     public void viewAllMyClients() {

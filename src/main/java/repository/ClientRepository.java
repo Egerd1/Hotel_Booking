@@ -74,6 +74,7 @@ public class ClientRepository {
         } finally {
             session.close();
         }
+        JOptionPane.showMessageDialog(null, "Customer updated successfully!");
     }
 
     public Client findClientByPersonalIdCode(Long id) {

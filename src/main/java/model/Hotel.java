@@ -21,6 +21,7 @@ public class Hotel {
     private int numberOfRooms = 30;
     private Double price;
 
+
     @Override
     public String toString() {
         return

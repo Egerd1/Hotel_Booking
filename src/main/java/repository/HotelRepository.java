@@ -8,11 +8,12 @@ import org.hibernate.Transaction;
 import javax.swing.*;
 import java.util.List;
 
+
 public class HotelRepository {
 
     private static SessionFactory factory = SessionManager.getFactory();
 
-    public void createHotelToDB(Hotel hotel) {
+    public Hotel createHotelToDB(Hotel hotel) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -28,15 +29,17 @@ public class HotelRepository {
         } finally {
             session.close();
         }
+        return hotel;
     }
 
-    public void deleteHotelFromDB(int id) {
+    public Hotel deleteHotelFromDB(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
+        Hotel hotel = null;
 
         try {
             transaction = session.beginTransaction();
-            Hotel hotel = session.find(Hotel.class, id);
+            hotel = session.find(Hotel.class, id);
             session.remove(hotel);
             transaction.commit();
         } catch (Exception e) {
@@ -47,6 +50,7 @@ public class HotelRepository {
         } finally {
             session.close();
         }
+        return hotel;
     }
 
     public void updateHotelFromDB(Hotel hotel) {
@@ -65,7 +69,9 @@ public class HotelRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+            JOptionPane.showMessageDialog(null, "Hotel updated successfully!");
         }
+
 
     }
 
@@ -86,9 +92,10 @@ public class HotelRepository {
             session.close();
         }
         return hotel;
+
     }
 
-    public List<Hotel> showAllMyHotelsFromDB() {
+    public List<Hotel> getAllHotelsFromDB() {
         Session session = factory.openSession();
         Transaction transaction = null;
         List<Hotel> myHotels = null;

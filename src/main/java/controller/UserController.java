@@ -82,7 +82,7 @@ public class UserController implements ActionListener {
             clientController.updateClient();
         }
         if (e.getSource() == button2){
-            hotelController.displayAllHotels();
+            hotelController.getAllHotels();
         }
         if (e.getSource() == button3){
             bookingController.createNewBooking();

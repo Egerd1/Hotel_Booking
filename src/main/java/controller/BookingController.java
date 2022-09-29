@@ -1,6 +1,8 @@
 package controller;
 
 import com.toedter.calendar.JDateChooser;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import model.Bookings;
 import model.Client;
 import model.Hotel;
@@ -14,16 +16,21 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookingController {
 
-    private final BookingRepository bookingRepository = new BookingRepository();
-    private final ClientRepository clientRepository = new ClientRepository();
-    private final HotelRepository hotelRepository = new HotelRepository();
-    private final ClientController clientController = new ClientController();
-    private final HotelController hotelController = new HotelController();
+    private BookingRepository bookingRepository = new BookingRepository();
+    private ClientRepository clientRepository = new ClientRepository();
+    private HotelRepository hotelRepository = new HotelRepository();
+    private ClientController clientController = new ClientController();
+    private HotelController hotelController = new HotelController();
 
+    public BookingController(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
 
-    public Client verifyClient() {
+    private Client verifyClient() {
         Long userIdCode = Long.valueOf(this.getUserInput("Please enter your personal ID code"));
         Client foundClient = clientRepository.findClientByPersonalIdCode(userIdCode);
         if (foundClient == null) {
@@ -94,7 +101,7 @@ public class BookingController {
                 updatedBooking.setClient(foundClient);
                 break;
             case 4:
-                hotelController.displayAllHotels();
+                hotelController.getAllHotels();
                 Long myHotelId = Long.valueOf(this.getUserInput("Please enter new hotel id:"));
                 Hotel foundHotel = hotelRepository.findHotelFromDBById(myHotelId);
                 updatedBooking.setHotel(foundHotel);

@@ -167,7 +167,7 @@ public class AdminController implements ActionListener {
             hotelController.updateHotel();
         }
         if (e.getSource() == button7){
-            hotelController.displayAllHotels();
+            hotelController.getAllHotels();
         }
         if (e.getSource() == button8){
             hotelController.deleteHotel();
