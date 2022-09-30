@@ -38,7 +38,7 @@ public class HotelControllerTest {
         verify(hotelRepository).createHotelToDB(myHotel.capture());
 
         Hotel capturedHotel = myHotel.getValue();
-        assertThat(capturedHotel).isEqualTo(hotel);
+        Assertions.assertEquals(capturedHotel, hotel);
     }
 
     @Test
@@ -54,7 +54,8 @@ public class HotelControllerTest {
         verify(hotelRepository).updateHotelFromDB(myHotel.capture());
 
         Hotel capturedHotel = myHotel.getValue();
-        assertThat(capturedHotel).isEqualTo(hotel);
+        Assertions.assertEquals(capturedHotel,hotel);
+
 
     }
 

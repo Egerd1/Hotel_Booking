@@ -38,6 +38,7 @@ class ClientControllerTest {
         verify(clientRepositoryMock).createClientToDB(myClient.capture());
         Client client1 = myClient.getValue();
         assertThat(client).isEqualTo(client1);
+        Assertions.assertEquals(client,client1);
     }
 
     @Test
@@ -62,6 +63,7 @@ class ClientControllerTest {
 
         Client mockClient = myClient.getValue();
         assertThat(mockClient).isEqualTo(client);
+        Assertions.assertEquals(mockClient,client);
 
     }
 

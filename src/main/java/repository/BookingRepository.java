@@ -13,6 +13,7 @@ import java.util.List;
 public class BookingRepository {
 
     private static SessionFactory factory = SessionManager.getFactory();
+    HotelRepository hotel = new HotelRepository();
 
     public void createBookingToDB(Bookings booking) {
         Session session = factory.openSession();
@@ -29,6 +30,7 @@ public class BookingRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+            JOptionPane.showMessageDialog(null, "Booking to hotel " +  booking.getHotel().getHotelName() + " created successfully!");
         }
     }
 
@@ -48,10 +50,11 @@ public class BookingRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+
         }
     }
 
-    public void updateBookingFromDB(Long bookingId) {
+    public void updateBookingFromDB(Bookings bookingId) {
         Session session = factory.openSession();
         Transaction transaction = null;
 
@@ -68,6 +71,7 @@ public class BookingRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+            JOptionPane.showMessageDialog(null, "Booking update went successfully!");
         }
     }
 
@@ -98,6 +102,11 @@ public class BookingRepository {
         try {
             transaction = session.beginTransaction();
             booking = session.find(Bookings.class, id);
+            if (booking != null) {
+                JOptionPane.showMessageDialog(null, booking.toString());
+            } else {
+                JOptionPane.showMessageDialog(null,"Sorry, but we don't have booking with this id");
+            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -109,6 +118,8 @@ public class BookingRepository {
         }
         return booking;
     }
+
+
     public List<Bookings> findBookingsFromDBByPersonalId(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
@@ -132,9 +143,5 @@ public class BookingRepository {
             session.close();
         }
         return booking;
-    }
-
-    private String getUserInput(String message) {
-        return JOptionPane.showInputDialog(message);
     }
 }

@@ -28,6 +28,7 @@ public class ClientRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+            JOptionPane.showMessageDialog(null, "Client " + client.getFirstName() + " created successfully!");
         }
         return client;
     }
@@ -54,6 +55,7 @@ public class ClientRepository {
             }
         } finally {
             session.close();
+            JOptionPane.showMessageDialog(null, "Client deleted successfully!");
         }
     }
 
@@ -74,7 +76,7 @@ public class ClientRepository {
         } finally {
             session.close();
         }
-        JOptionPane.showMessageDialog(null, "Customer updated successfully!");
+        JOptionPane.showMessageDialog(null, "Client updated successfully!");
     }
 
     public Client findClientByPersonalIdCode(Long id) {
@@ -86,7 +88,7 @@ public class ClientRepository {
             transaction = session.beginTransaction();
             client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
             if (client != null) {
-                JOptionPane.showMessageDialog(null, "Hello again " + client.getFirstName());
+                JOptionPane.showMessageDialog(null, client.toString());
             } else {
                 JOptionPane.showMessageDialog(null,"You don't have an account with us please follow steps to register in our system");
             }
@@ -120,9 +122,5 @@ public class ClientRepository {
         }
 
         return myClients;
-    }
-
-    private String getUserInput(String message) {
-        return JOptionPane.showInputDialog(message);
     }
 }

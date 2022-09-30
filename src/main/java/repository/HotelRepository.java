@@ -27,7 +27,7 @@ public class HotelRepository {
             }
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
-            session.close();
+            session.close();JOptionPane.showMessageDialog(null, "Hotel " + hotel.getHotelName() + " created successfully!");
         }
         return hotel;
     }
@@ -49,6 +49,7 @@ public class HotelRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+            JOptionPane.showMessageDialog(null, "Hotel deleted successfully!");
         }
         return hotel;
     }
@@ -82,6 +83,11 @@ public class HotelRepository {
         try {
             transaction = session.beginTransaction();
             hotel = session.find(Hotel.class, id);
+            if (hotel != null) {
+                JOptionPane.showMessageDialog(null, hotel.toString());
+            } else {
+                JOptionPane.showMessageDialog(null,"Sorry, but we don't have hotel with this id");
+            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

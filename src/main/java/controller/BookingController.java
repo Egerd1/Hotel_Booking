@@ -30,6 +30,7 @@ public class BookingController {
         this.bookingRepository = bookingRepository;
     }
 
+
     private Client verifyClient() {
         Long userIdCode = Long.valueOf(this.getUserInput("Please enter your personal ID code"));
         Client foundClient = clientRepository.findClientByPersonalIdCode(userIdCode);
@@ -86,11 +87,13 @@ public class BookingController {
                 LocalDate newArrivalDate = this.getDateFromCustomer("New Arrival Date");
                 updatedBooking.setArrivalDate(newArrivalDate);
                 updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
+                bookingRepository.updateBookingFromDB(updatedBooking);
                 break;
             case 2:
                 LocalDate newLeaveDate = this.getDateFromCustomer("New Leave Date");
                 updatedBooking.setLeaveDate(newLeaveDate);
                 updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
+                bookingRepository.updateBookingFromDB(updatedBooking);
                 break;
             case 3:
                 Long myClientId = Long.valueOf(this.getUserInput("Please enter new client personal id:"));
@@ -99,12 +102,14 @@ public class BookingController {
                     foundClient = clientController.createClient();
                 }
                 updatedBooking.setClient(foundClient);
+                bookingRepository.updateBookingFromDB(updatedBooking);
                 break;
             case 4:
                 hotelController.getAllHotels();
                 Long myHotelId = Long.valueOf(this.getUserInput("Please enter new hotel id:"));
                 Hotel foundHotel = hotelRepository.findHotelFromDBById(myHotelId);
                 updatedBooking.setHotel(foundHotel);
+                bookingRepository.updateBookingFromDB(updatedBooking);
                 break;
             case 5:
                 this.updateBooking();

@@ -120,7 +120,7 @@ public class AdminController implements ActionListener {
         button13.addActionListener(this);
 
         button14 = new JButton();
-        button14.setText("Find Booking by personal ID");
+        button14.setText("Find Booking by ID");
         button14.setPreferredSize(new Dimension(210, 40));
         panel.add(button14);
         button14.setBackground(Color.ORANGE);
@@ -176,6 +176,7 @@ public class AdminController implements ActionListener {
             hotelController.findHotelById();
         }
         if (e.getSource() == button10){
+            bookingController.viewAllMyBookings();
             bookingController.createNewBooking();
         }
         if (e.getSource() == button11){
