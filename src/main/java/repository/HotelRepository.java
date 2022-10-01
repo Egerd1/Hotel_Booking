@@ -8,15 +8,15 @@ import org.hibernate.Transaction;
 import javax.swing.*;
 import java.util.List;
 
+
 public class HotelRepository {
 
-    private static SessionFactory factory = SessionManager.getFactory();
+    private static final SessionFactory factory = SessionManager.getFactory();
 
-    public void createHotelToDB(Hotel hotel) {
-        Session session = factory.openSession();
+    public Hotel createHotelToDB(Hotel hotel) {
         Transaction transaction = null;
 
-        try {
+        try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
             session.persist(hotel);
             transaction.commit();
@@ -26,77 +26,26 @@ public class HotelRepository {
             }
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
-            session.close();
+            JOptionPane.showMessageDialog(null, "Hotel " + hotel.getHotelName() + " created successfully!");
         }
+        return hotel;
     }
 
-    public void deleteHotelFromDB(int id) {
-        Session session = factory.openSession();
-        Transaction transaction = null;
-
-        try {
-            transaction = session.beginTransaction();
-            Hotel hotel = session.find(Hotel.class, id);
-            session.remove(hotel);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            System.out.println(e.getClass() + " : " + e.getMessage());
-        } finally {
-            session.close();
-        }
-    }
-
-    public void updateHotelFromDB(Long chosenId) {
-        Session session = factory.openSession();
-        Transaction transaction = null;
-
-        try {
-            transaction = session.beginTransaction();
-            Hotel foundHotel = session.find(Hotel.class, chosenId);
-            int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what info you want to update:\n"
-                    + " for address enter 1\n"
-                    + " for Hotel name enter 2\n"
-                    + " for number of rooms enter 3\n"
-                    + " for change price enter 4\n"));
-
-            if (userChoice == 1) {
-                foundHotel.setAddress(this.getUserInput("Please enter new address: "));
-            } else if (userChoice == 2) {
-                foundHotel.setHotelName(this.getUserInput("Please enter new Hotel name: "));
-            } else if (userChoice == 3) {
-                int numberOfRooms = Integer.parseInt(this.getUserInput("Please enter new number of rooms: "));
-                foundHotel.setNumberOfRooms(numberOfRooms);
-            } else if (userChoice == 4) {
-                Double pricePerDay = Double.parseDouble(this.getUserInput("Please enter new price: "));
-                foundHotel.setPrice(pricePerDay);
-            } else {
-                System.out.println("Something went wrong!");
-                System.exit(0);
-            }
-            session.merge(foundHotel); // merge update info
-            transaction.commit();
-
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            System.out.println(e.getClass() + " : " + e.getMessage());
-        } finally {
-            session.close();
-        }
-
-    }
-
-    public Hotel findHotelFromDBById(int id) {
+    public Hotel deleteHotelFromDB(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Hotel hotel = null;
+
         try {
             transaction = session.beginTransaction();
             hotel = session.find(Hotel.class, id);
+            if (hotel != null){
+                session.remove(hotel);
+               JOptionPane.showMessageDialog(null, "Hotel deleted successfully!");
+            }else {
+                JOptionPane.showMessageDialog(null, "Sorry, we don't have this hotel!");
+            }
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -109,7 +58,54 @@ public class HotelRepository {
         return hotel;
     }
 
-    public List<Hotel> showAllMyHotelsFromDB() {
+    public void updateHotelFromDB(Hotel hotel) {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            session.merge(hotel); // merge update info
+            transaction.commit();
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println(e.getClass() + " : " + e.getMessage());
+        } finally {
+            session.close();
+
+        }
+
+
+    }
+
+    public Hotel findHotelFromDBById(Long id) {
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        Hotel hotel = null;
+        try {
+            transaction = session.beginTransaction();
+            hotel = session.find(Hotel.class, id);
+            if (hotel != null) {
+                JOptionPane.showMessageDialog(null, hotel.toString());
+            } else {
+                JOptionPane.showMessageDialog(null,"Sorry, but we don't have hotel with this id");
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println(e.getClass() + " : " + e.getMessage());
+        } finally {
+            session.close();
+        }
+        return hotel;
+
+    }
+
+    public List<Hotel> getAllHotelsFromDB() {
         Session session = factory.openSession();
         Transaction transaction = null;
         List<Hotel> myHotels = null;
@@ -129,7 +125,7 @@ public class HotelRepository {
         return myHotels;
     }
 
-    public void updateHotelAvailableRooms(int id) {
+    public void updateHotelAvailableRooms(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         try {
@@ -138,7 +134,7 @@ public class HotelRepository {
             if (hotel.getNumberOfRooms() > 0) {
                 hotel.setNumberOfRooms((hotel.getNumberOfRooms()) - 1);
             } else {
-                System.out.println("Sorry, but we don't have available rooms!");
+                JOptionPane.showMessageDialog(null, "Sorry, but we don't have available rooms!");
             }
             session.merge(hotel);
             transaction.commit();

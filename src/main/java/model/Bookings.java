@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity(name = "bookings")
 public class Bookings {
 
@@ -25,5 +24,17 @@ public class Bookings {
     @OneToOne
     private Hotel hotel;
     private Double totalAmount;
+
+    @Override
+    public String toString() {
+        return
+                " *** Id= " + id +
+                        "   ArrivalDate= " + arrivalDate +
+                        "   LeaveDate= " + leaveDate +
+                        "   Client= " + client +
+                        "   Hotel= " + hotel +
+                        "   TotalAmount= " + totalAmount +"\n"
+                ;
+    }
 
 }
