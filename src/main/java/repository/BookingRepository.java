@@ -30,7 +30,7 @@ public class BookingRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
-            JOptionPane.showMessageDialog(null, "Booking to hotel " +  booking.getHotel().getHotelName() + " created successfully!");
+            JOptionPane.showMessageDialog(null, "Booking to hotel " + booking.getHotel().getHotelName() + " created successfully!");
         }
     }
 
@@ -41,7 +41,13 @@ public class BookingRepository {
         try {
             transaction = session.beginTransaction();
             booking = session.find(Bookings.class, id);
-            session.remove(booking);
+            if (booking != null) {
+                session.remove(booking);
+                JOptionPane.showMessageDialog(null, "Booking deleted successfully!");
+            }else {
+                JOptionPane.showMessageDialog(null, "We don't have booking with this id!");
+            }
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -50,6 +56,7 @@ public class BookingRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+
 
         }
         return booking;
@@ -99,7 +106,7 @@ public class BookingRepository {
     public Bookings findBookingFromDBById(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
-       Bookings booking = null;
+        Bookings booking = null;
         try {
             transaction = session.beginTransaction();
             booking = session.find(Bookings.class, id);
@@ -107,7 +114,7 @@ public class BookingRepository {
             if (booking != null) {
                 JOptionPane.showMessageDialog(null, booking.toString());
             } else {
-                JOptionPane.showMessageDialog(null,"Sorry, but we don't have booking with this id");
+                JOptionPane.showMessageDialog(null, "Sorry, but we don't have booking with this id");
 
             }
             transaction.commit();
@@ -132,9 +139,9 @@ public class BookingRepository {
         try {
             transaction = session.beginTransaction();
             client = clientRepository.findClientByPersonalIdCode(id);
-            Query<Bookings> query = session.createQuery("FROM bookings WHERE client =:client",Bookings.class);
-            query.setParameter("client",client);
-            booking=query.getResultList();
+            Query<Bookings> query = session.createQuery("FROM bookings WHERE client =:client", Bookings.class);
+            query.setParameter("client", client);
+            booking = query.getResultList();
             //booking =session.createQuery("FROM bookings WHERE client ="+client,Bookings.class).getSingleResultOrNull();
             transaction.commit();
         } catch (Exception e) {
