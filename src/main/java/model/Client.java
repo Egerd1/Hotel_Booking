@@ -19,15 +19,15 @@ public class Client {
     private Long personalId;
     private String firstName;
     private String lastName;
-    private String age;
+    private int age;
 
     @Override
     public String toString() {
         return
-                "id =" + id  +
-                        " PersonalId= " + personalId  +
-                        " First Name= " + firstName +
-                        " Last Name= " + lastName  +
-                        " Age=" + age +'\n';
+                "*** Personal Id= " + personalId +
+                        "   First Name= " + firstName +
+                        "   Last Name= " + lastName +
+                        "   Age= " + age + '\n'
+                ;
     }
 }

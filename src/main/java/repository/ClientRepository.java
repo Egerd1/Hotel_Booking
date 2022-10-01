@@ -1,5 +1,6 @@
 package repository;
 
+import model.Bookings;
 import model.Client;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,27 +28,41 @@ public class ClientRepository {
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+            JOptionPane.showMessageDialog(null, "Client " + client.getFirstName() + " created successfully!");
         }
         return client;
     }
 
-    public void deleteClientFromDB(int id) {
+    public Client deleteClientFromDB(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Client client = null;
+        List<Bookings> booking=null;
+        BookingRepository bookingRepository = new BookingRepository();
         try {
             transaction = session.beginTransaction();
+            booking = bookingRepository.findBookingsFromDBByPersonalId(id);
+            if(booking!= null){
+                booking.forEach(b->{bookingRepository.deleteBookingsFromDB(b.getId());});
+            }
             client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
-            session.remove(client);
+            if (client != null){
+                session.remove(client);
+                JOptionPane.showMessageDialog(null, "Client deleted successfully!");
+
+            }
+
             transaction.commit();
+
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
             session.close();
+
         }
+        return client;
     }
 
     public void updateClientInfo(Client client) {
@@ -67,6 +82,7 @@ public class ClientRepository {
         } finally {
             session.close();
         }
+        JOptionPane.showMessageDialog(null, "Client updated successfully!");
     }
 
     public Client findClientByPersonalIdCode(Long id) {
@@ -78,9 +94,9 @@ public class ClientRepository {
             transaction = session.beginTransaction();
             client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
             if (client != null) {
-                System.out.println("Hello again " + client.getFirstName());
+                JOptionPane.showMessageDialog(null, client.toString());
             } else {
-                System.out.println("You don't have an account with us please follow steps to register in our system");
+                JOptionPane.showMessageDialog(null,"You don't have an account with us");
             }
             transaction.commit();
         } catch (Exception e) {
@@ -112,9 +128,5 @@ public class ClientRepository {
         }
 
         return myClients;
-    }
-
-    private String getUserInput(String message) {
-        return JOptionPane.showInputDialog(message);
     }
 }

@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity(name = "hotels")
 public class Hotel {
 
@@ -21,5 +20,17 @@ public class Hotel {
     private String address;
     private int numberOfRooms = 30;
     private Double price;
+
+
+    @Override
+    public String toString() {
+        return
+                "*** Id= " + id +
+                        "   HotelName= " + hotelName +
+                        "   Address= " + address +
+                        "   Number Of Rooms= " + numberOfRooms +
+                        "   Price per day= " + price + '\n'
+                ;
+    }
 
 }
