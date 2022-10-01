@@ -176,7 +176,7 @@ public class AdminController implements ActionListener {
             hotelController.findHotelById();
         }
         if (e.getSource() == button10){
-            bookingController.viewAllMyBookings();
+            hotelController.getAllHotels();
             bookingController.createNewBooking();
         }
         if (e.getSource() == button11){

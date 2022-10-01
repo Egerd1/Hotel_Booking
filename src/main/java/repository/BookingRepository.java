@@ -34,13 +34,13 @@ public class BookingRepository {
         }
     }
 
-    public void deleteBookingsFromDB(Long id) {
+    public Bookings deleteBookingsFromDB(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
-
+        Bookings booking = null;
         try {
             transaction = session.beginTransaction();
-            Bookings booking = session.find(Bookings.class, id);
+            booking = session.find(Bookings.class, id);
             session.remove(booking);
             transaction.commit();
         } catch (Exception e) {
@@ -52,6 +52,7 @@ public class BookingRepository {
             session.close();
 
         }
+        return booking;
     }
 
     public void updateBookingFromDB(Bookings bookingId) {
@@ -102,10 +103,12 @@ public class BookingRepository {
         try {
             transaction = session.beginTransaction();
             booking = session.find(Bookings.class, id);
+
             if (booking != null) {
                 JOptionPane.showMessageDialog(null, booking.toString());
             } else {
                 JOptionPane.showMessageDialog(null,"Sorry, but we don't have booking with this id");
+
             }
             transaction.commit();
         } catch (Exception e) {

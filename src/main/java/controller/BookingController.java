@@ -68,61 +68,66 @@ public class BookingController {
 
     public void deleteBooking() {
         Long chosenId = Long.valueOf((this.getUserInput("Please enter the Booking id to be removed")));
-        bookingRepository.deleteBookingsFromDB(chosenId);
+        Bookings booking = bookingRepository.deleteBookingsFromDB(chosenId);
+
     }
 
     public void updateBooking() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("Please enter the Booking id to be updated"));
         Bookings updatedBooking = bookingRepository.findBookingFromDBById(chosenId);
-        int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what Booking info you want to update:\n"
-                + "Arrival Date enter 1\n"
-                + "Leaving Date enter 2\n"
-                + "To change client enter 3\n"
-                + "To change hotel enter 4\n"
-                + "To make more updates enter 5\n"
-                + "To EXIT enter 6"));
+        if (updatedBooking == null){
 
-        switch (userChoice) {
-            case 1:
-                LocalDate newArrivalDate = this.getDateFromCustomer("New Arrival Date");
-                updatedBooking.setArrivalDate(newArrivalDate);
-                updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
-                bookingRepository.updateBookingFromDB(updatedBooking);
-                break;
-            case 2:
-                LocalDate newLeaveDate = this.getDateFromCustomer("New Leave Date");
-                updatedBooking.setLeaveDate(newLeaveDate);
-                updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
-                bookingRepository.updateBookingFromDB(updatedBooking);
-                break;
-            case 3:
-                Long myClientId = Long.valueOf(this.getUserInput("Please enter new client personal id:"));
-                Client foundClient = clientRepository.findClientByPersonalIdCode(myClientId);
-                if (foundClient == null) {
-                    foundClient = clientController.createClient();
-                }
-                updatedBooking.setClient(foundClient);
-                bookingRepository.updateBookingFromDB(updatedBooking);
-                break;
-            case 4:
-                hotelController.getAllHotels();
-                Long myHotelId = Long.valueOf(this.getUserInput("Please enter new hotel id:"));
-                Hotel foundHotel = hotelRepository.findHotelFromDBById(myHotelId);
-                updatedBooking.setHotel(foundHotel);
-                bookingRepository.updateBookingFromDB(updatedBooking);
-                break;
-            case 5:
-                this.updateBooking();
-                break;
-            case 6:
-                System.exit(0);
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Choose an option from the list");
+        }else {
+            int userChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what Booking info you want to update:\n"
+                    + "Arrival Date enter 1\n"
+                    + "Leaving Date enter 2\n"
+                    + "To change client enter 3\n"
+                    + "To change hotel enter 4\n"
+                    + "To make more updates enter 5\n"
+                    + "To EXIT enter 6"));
 
-                break;
+            switch (userChoice) {
+                case 1:
+                    LocalDate newArrivalDate = this.getDateFromCustomer("New Arrival Date");
+                    updatedBooking.setArrivalDate(newArrivalDate);
+                    updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
+                    bookingRepository.updateBookingFromDB(updatedBooking);
+                    break;
+                case 2:
+                    LocalDate newLeaveDate = this.getDateFromCustomer("New Leave Date");
+                    updatedBooking.setLeaveDate(newLeaveDate);
+                    updatedBooking.setTotalAmount(Period.between(updatedBooking.getArrivalDate(), updatedBooking.getLeaveDate()).getDays() * updatedBooking.getHotel().getPrice());
+                    bookingRepository.updateBookingFromDB(updatedBooking);
+                    break;
+                case 3:
+                    Long myClientId = Long.valueOf(this.getUserInput("Please enter new client personal id:"));
+                    Client foundClient = clientRepository.findClientByPersonalIdCode(myClientId);
+                    if (foundClient == null) {
+                        foundClient = clientController.createClient();
+                    }
+                    updatedBooking.setClient(foundClient);
+                    bookingRepository.updateBookingFromDB(updatedBooking);
+                    break;
+                case 4:
+                    hotelController.getAllHotels();
+                    Long myHotelId = Long.valueOf(this.getUserInput("Please enter new hotel id:"));
+                    Hotel foundHotel = hotelRepository.findHotelFromDBById(myHotelId);
+                    updatedBooking.setHotel(foundHotel);
+                    bookingRepository.updateBookingFromDB(updatedBooking);
+                    break;
+                case 5:
+                    this.updateBooking();
+                    break;
+                case 6:
+                    System.exit(0);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Choose an option from the list");
+
+                    break;
+            }
+
         }
-
 
     }
 
@@ -140,9 +145,10 @@ public class BookingController {
 //        System.out.println(bookingRepository.showAllMyBookingsFromDB());
     }
 
-    public Bookings findBookingById() {
+    public void findBookingById() {
         Long chosenId = (long) Integer.parseInt(this.getUserInput("To view booking, please enter the booking id"));
-        return bookingRepository.findBookingFromDBById(chosenId);
+       Bookings booking = bookingRepository.findBookingFromDBById(chosenId);
+
     }
 
     private String getUserInput(String message) {

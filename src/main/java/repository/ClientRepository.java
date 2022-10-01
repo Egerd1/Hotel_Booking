@@ -33,7 +33,7 @@ public class ClientRepository {
         return client;
     }
 
-    public void deleteClientFromDB(Long id) {
+    public Client deleteClientFromDB(Long id) {
         Session session = factory.openSession();
         Transaction transaction = null;
         Client client = null;
@@ -46,7 +46,11 @@ public class ClientRepository {
                 booking.forEach(b->{bookingRepository.deleteBookingsFromDB(b.getId());});
             }
             client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
-            session.remove(client);
+            if (client != null){
+                session.remove(client);
+                JOptionPane.showMessageDialog(null, "Sorry, we don't have client this client");
+            }
+
             transaction.commit();
 
         } catch (Exception e) {
@@ -55,8 +59,8 @@ public class ClientRepository {
             }
         } finally {
             session.close();
-            JOptionPane.showMessageDialog(null, "Client deleted successfully!");
         }
+        return client;
     }
 
     public void updateClientInfo(Client client) {
@@ -90,7 +94,7 @@ public class ClientRepository {
             if (client != null) {
                 JOptionPane.showMessageDialog(null, client.toString());
             } else {
-                JOptionPane.showMessageDialog(null,"You don't have an account with us please follow steps to register in our system");
+                JOptionPane.showMessageDialog(null,"You don't have an account with us");
             }
             transaction.commit();
         } catch (Exception e) {

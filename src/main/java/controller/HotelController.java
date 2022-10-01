@@ -23,31 +23,31 @@ public class HotelController {
     }
 
     public void updateHotel (){
-        Long userChoice = Long.valueOf(this.getUserInput("please enter hotel id to update"));
+        Long userChoice = Long.valueOf(this.getUserInput("Please enter hotel id to update"));
         Hotel foundHotel = hotelRepository.findHotelFromDBById(userChoice);
-        int newUserChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what info you want to update:\n"
-                + " for address enter 1\n"
-                + " for Hotel name enter 2\n"
-                + " for number of rooms enter 3\n"
-                + " to change room price enter 4\n"));
+        if (foundHotel != null){
+            int newUserChoice = Integer.parseInt(JOptionPane.showInputDialog("Please specify what info you want to update:\n"
+                    + " for address enter 1\n"
+                    + " for Hotel name enter 2\n"
+                    + " for number of rooms enter 3\n"
+                    + " to change room price enter 4\n"));
 
-        if (userChoice == 1) {
-            foundHotel.setAddress(this.getUserInput("Please enter new address: "));
-        } else if (userChoice == 2) {
-            foundHotel.setHotelName(this.getUserInput("Please enter new Hotel name: "));
-        } else if (userChoice == 3) {
-            int numberOfRooms = Integer.parseInt(this.getUserInput("Please enter new number of rooms: "));
-            foundHotel.setNumberOfRooms(numberOfRooms);
-        } else if (userChoice == 4) {
-            Double pricePerDay = Double.parseDouble(this.getUserInput("Please enter new price: "));
-            foundHotel.setPrice(pricePerDay);
-        } else {
-            JOptionPane.showMessageDialog(null, "Something went wrong!");
-            System.exit(0);
+            if (userChoice == 1) {
+                foundHotel.setAddress(this.getUserInput("Please enter new address: "));
+            } else if (userChoice == 2) {
+                foundHotel.setHotelName(this.getUserInput("Please enter new Hotel name: "));
+            } else if (userChoice == 3) {
+                int numberOfRooms = Integer.parseInt(this.getUserInput("Please enter new number of rooms: "));
+                foundHotel.setNumberOfRooms(numberOfRooms);
+            } else if (userChoice == 4) {
+                Double pricePerDay = Double.parseDouble(this.getUserInput("Please enter new price: "));
+                foundHotel.setPrice(pricePerDay);
+            } else {
+                JOptionPane.showMessageDialog(null, "Something went wrong!");
+                System.exit(0);
+            }
+            hotelRepository.updateHotelFromDB(foundHotel);
         }
-        hotelRepository.updateHotelFromDB(foundHotel);
-
-
     }
 
     public void deleteHotel() {
