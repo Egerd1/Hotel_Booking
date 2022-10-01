@@ -48,7 +48,8 @@ public class ClientRepository {
             client = session.createQuery("FROM clients WHERE personalId = " + id, Client.class).getSingleResultOrNull();
             if (client != null){
                 session.remove(client);
-                JOptionPane.showMessageDialog(null, "Sorry, we don't have client this client");
+                JOptionPane.showMessageDialog(null, "Client deleted successfully!");
+
             }
 
             transaction.commit();
@@ -59,6 +60,7 @@ public class ClientRepository {
             }
         } finally {
             session.close();
+
         }
         return client;
     }

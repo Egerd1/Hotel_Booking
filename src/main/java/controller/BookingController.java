@@ -46,7 +46,7 @@ public class BookingController {
 
     public void createNewBooking() {
         Bookings booking = new Bookings();
-        Long userChoice = Long.valueOf(this.getUserInput("Please choose your hotel from following hotel list"));
+        Long userChoice = Long.valueOf(this.getUserInput("Please choose your hotel from \"View all Hotels\" button"));
         Hotel hotel = hotelRepository.findHotelFromDBById(userChoice);
         if (hotel.getNumberOfRooms() > 0) {
             booking.setHotel(hotel);

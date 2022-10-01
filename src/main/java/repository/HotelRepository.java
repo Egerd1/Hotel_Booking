@@ -11,13 +11,12 @@ import java.util.List;
 
 public class HotelRepository {
 
-    private static SessionFactory factory = SessionManager.getFactory();
+    private static final SessionFactory factory = SessionManager.getFactory();
 
     public Hotel createHotelToDB(Hotel hotel) {
-        Session session = factory.openSession();
         Transaction transaction = null;
 
-        try {
+        try (Session session = factory.openSession()) {
             transaction = session.beginTransaction();
             session.persist(hotel);
             transaction.commit();
@@ -27,7 +26,6 @@ public class HotelRepository {
             }
             System.out.println(e.getClass() + " : " + e.getMessage());
         } finally {
-            session.close();
             JOptionPane.showMessageDialog(null, "Hotel " + hotel.getHotelName() + " created successfully!");
         }
         return hotel;
