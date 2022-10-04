@@ -6,7 +6,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import repository.ClientRepository;
 
@@ -17,68 +16,85 @@ import static org.mockito.Mockito.verify;
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 class ClientControllerTest {
-    private  ClientController clientController;
-
     @Mock
-    private static ClientRepository clientRepositoryMock;
+    private ClientRepository clientRepository;
+    private ClientController underTest;
 
     @BeforeEach
-    void setUp(){
-        clientController = new ClientController(clientRepositoryMock);
+    void setUp() {
+        underTest = new ClientController(clientRepository);
     }
 
 
     @Test
     @Order(1)
     void testCreateClient() {
+        // given
+        Client client = new Client(1l, 1222l, "hasan", "karim", 30);
 
-        Client client = new Client(1l,1222l,"hasan","karim",30);
-        clientRepositoryMock.createClientToDB(client);
-        ArgumentCaptor<Client> myClient = ArgumentCaptor.forClass(Client.class);
-        verify(clientRepositoryMock).createClientToDB(myClient.capture());
-        Client client1 = myClient.getValue();
-        assertThat(client).isEqualTo(client1);
-        Assertions.assertEquals(client,client1);
+        // when
+        clientRepository.createClientToDB(client);
+
+        // then
+        ArgumentCaptor<Client> clientArgumentCaptor = ArgumentCaptor.forClass(Client.class);
+        verify(clientRepository).createClientToDB(clientArgumentCaptor.capture());
+        Client capturedClient = clientArgumentCaptor.getValue();
+        assertThat(capturedClient).isEqualTo(client);
+
     }
 
     @Test
     @Order(2)
     void testDeleteClient() {
-        Client client = new Client(2l,1234l,"david","anderson",30);
-        clientController.deleteClient();
-        Mockito.verify(clientRepositoryMock).deleteClientFromDB(1234l);
+        // given
+        Client client = new Client(2l, 1234l, "david", "anderson", 30);
+
+        // when
+        underTest.deleteClient();
+
+        // then
+        verify(clientRepository).deleteClientFromDB(1234l);
     }
 
     @Test
     @Order(3)
     void testUpdateClient() {
-        Client client = new Client(3l,1235l,"john","didi",38);
+        // given
+        Client client = new Client(3l, 1235l, "john", "didi", 38);
+
+        // when
         client.setAge(41);
         client.setLastName("dodo");
-        clientRepositoryMock.updateClientInfo(client);
+        clientRepository.updateClientInfo(client);
 
-        ArgumentCaptor<Client> myClient = ArgumentCaptor.forClass(Client.class);
-
-        verify(clientRepositoryMock).updateClientInfo(myClient.capture());
-
-        Client mockClient = myClient.getValue();
-        assertThat(mockClient).isEqualTo(client);
-        Assertions.assertEquals(mockClient,client);
+        // then
+        ArgumentCaptor<Client> clientArgumentCaptor = ArgumentCaptor.forClass(Client.class);
+        verify(clientRepository).updateClientInfo(clientArgumentCaptor.capture());
+        Client capturedClient = clientArgumentCaptor.getValue();
+        assertThat(capturedClient).isEqualTo(client);
 
     }
 
     @Test
     @Order(4)
     void testFindClientByPersonalId() {
-        Client client = new Client(3l,1235l,"james","andra",20);
-        clientController.findClientByPersonalId();
-        verify(clientRepositoryMock).findClientByPersonalIdCode(1235l);
+        // given
+        Client client = new Client(3l, 1235l, "james", "andra", 20);
+
+        // when
+        underTest.findClientByPersonalId();
+
+        // then
+        verify(clientRepository).findClientByPersonalIdCode(1235l);
     }
 
     @Test
     @Order(5)
     void viewAllMyClients() {
-        clientController.viewAllMyClients();
-        verify(clientRepositoryMock).showAllMyClientsFromDB();
+        // when
+        underTest.viewAllMyClients();
+
+        // then
+        verify(clientRepository).showAllMyClientsFromDB();
     }
 }

@@ -9,8 +9,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import repository.HotelRepository;
 
-import java.util.List;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -20,68 +18,83 @@ import static org.mockito.Mockito.verify;
 public class HotelControllerTest {
     @Mock
     private HotelRepository hotelRepository;
-    private HotelController hotelController;
+    private HotelController underTest;
 
     @BeforeEach
     public void setUp() {
-        hotelController = new HotelController(hotelRepository);
+        underTest = new HotelController(hotelRepository);
     }
 
     @Test
     @Order(1)
     void testMakeNewHotel() {
+        // given
         Hotel hotel = new Hotel(1L, "Kolm Kuningat", "Paide", 50, 79.0);
+
+        // when
         hotelRepository.createHotelToDB(hotel);
 
-        ArgumentCaptor<Hotel> myHotel = ArgumentCaptor.forClass(Hotel.class);
-
-        verify(hotelRepository).createHotelToDB(myHotel.capture());
-
-        Hotel capturedHotel = myHotel.getValue();
-        Assertions.assertEquals(capturedHotel, hotel);
+        // then
+        ArgumentCaptor<Hotel> hotelArgumentCaptor = ArgumentCaptor.forClass(Hotel.class);
+        verify(hotelRepository).createHotelToDB(hotelArgumentCaptor.capture());
+        Hotel capturedHotel = hotelArgumentCaptor.getValue();
+        assertThat(capturedHotel).isEqualTo(hotel);
     }
 
     @Test
     @Order(2)
     void testUpdateHotel() {
+        // given
         Hotel hotel = new Hotel(2L, "Kolm Kuningat", "Paide", 50, 79.0);
+
+        // when
         hotel.setNumberOfRooms(45);
         hotel.setPrice(69.0);
         hotelRepository.updateHotelFromDB(hotel);
 
-        ArgumentCaptor<Hotel> myHotel = ArgumentCaptor.forClass(Hotel.class);
-
-        verify(hotelRepository).updateHotelFromDB(myHotel.capture());
-
-        Hotel capturedHotel = myHotel.getValue();
-        Assertions.assertEquals(capturedHotel,hotel);
-
-
+        // then
+        ArgumentCaptor<Hotel> hotelArgumentCaptor = ArgumentCaptor.forClass(Hotel.class);
+        verify(hotelRepository).updateHotelFromDB(hotelArgumentCaptor.capture());
+        Hotel capturedHotel = hotelArgumentCaptor.getValue();
+        assertThat(capturedHotel).isEqualTo(hotel);
     }
 
     @Test
     @Order(3)
     void testDeleteHotel() {
+        // given
         Hotel hotel = new Hotel(2L, "Kolm Kuningat", "Paide", 50, 79.0);
-        hotelController.deleteHotel();
-        verify(hotelRepository).deleteHotelFromDB(2L);
+
+        // when
+        underTest.deleteHotel();
+
+        // then
+        verify(hotelRepository).deleteHotelFromDB(hotel.getId());
 
     }
 
     @Test
     @Order(4)
     void testGetAllHotels() {
-        List<Hotel> hotels = hotelRepository.getAllHotelsFromDB();
-        assertThat(hotels).isNotNull();
+        // when
+        underTest.getAllHotels();
+
+        // then
+        verify(hotelRepository).getAllHotelsFromDB();
 
     }
 
     @Test
     @Order(5)
     void testFindHotelById() {
+        // given
         Hotel hotel = new Hotel(2L, "Kolm Kuningat", "Paide", 50, 79.0);
-        hotelController.findHotelById();
-        verify(hotelRepository).findHotelFromDBById(2L);
+
+        // when
+        underTest.findHotelById();
+
+        // then
+        verify(hotelRepository).findHotelFromDBById(hotel.getId());
     }
 
 }

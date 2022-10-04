@@ -14,6 +14,7 @@ import repository.BookingRepository;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
@@ -22,72 +23,90 @@ public class BookingControllerTest {
 
     @Mock
     private BookingRepository bookingRepository;
-    private BookingController bookingController;
+    private BookingController underTest;
 
     @BeforeEach
     public void setUp() {
-        bookingController = new BookingController(bookingRepository);
+        underTest = new BookingController(bookingRepository);
     }
 
     @Test
     @Order(1)
     void testCreateNewBooking() {
-        Client client = new Client(1l, 1222l, "hasan", "karim", 30);
+        // given
+        Client client = new Client(1L, 1222L, "hasan", "karim", 30);
         Hotel hotel = new Hotel(2L, "Kolm Kuningat", "Paide", 50, 79.0);
-        Bookings myBooking = new Bookings(1l, LocalDate.of(2022, 10, 1), LocalDate.of(2022, 10, 3), client, hotel, 237.0);
+        Bookings myBooking = new Bookings(1L, LocalDate.of(2022, 10, 1), LocalDate.of(2022, 10, 3), client, hotel, 237.0);
+
+        // when
         bookingRepository.createBookingToDB(myBooking);
-        ArgumentCaptor<Bookings> booking = ArgumentCaptor.forClass(Bookings.class);
 
-        verify(bookingRepository).createBookingToDB(booking.capture());
-
-        Bookings madeBooking = booking.getValue();
-        Assertions.assertEquals(madeBooking, myBooking);
+        // then
+        ArgumentCaptor<Bookings> bookingsArgumentCaptor = ArgumentCaptor.forClass(Bookings.class);
+        verify(bookingRepository).createBookingToDB(bookingsArgumentCaptor.capture());
+        Bookings capturedBooking = bookingsArgumentCaptor.getValue();
+        assertThat(capturedBooking).isEqualTo(myBooking);
     }
 
     @Test
     @Order(2)
     void testDeleteBooking() {
-        Client client = new Client(1l, 1222l, "hasan", "karim", 30);
+        // given
+        Client client = new Client(1L, 1222L, "hasan", "karim", 30);
         Hotel hotel = new Hotel(2L, "Kolm Kuningat", "Paide", 50, 79.0);
-        Bookings myBooking = new Bookings(1l, LocalDate.of(2022, 10, 1), LocalDate.of(2022, 10, 3), client, hotel, 237.0);
-        bookingController.deleteBooking();
-        verify(bookingRepository).deleteBookingsFromDB(1L);
+        Bookings myBooking = new Bookings(1L, LocalDate.of(2022, 10, 1), LocalDate.of(2022, 10, 3), client, hotel, 237.0);
+
+        // when
+        underTest.deleteBooking();
+
+        // then
+        verify(bookingRepository).deleteBookingsFromDB(myBooking.getId());
 
     }
 
     @Test
     @Order(3)
     void testUpdateBooking() {
-        Client client = new Client(1l, 1222l, "hasan", "karim", 30);
+        // given
+        Client client = new Client(1L, 1222L, "hasan", "karim", 30);
         Hotel hotel = new Hotel(2L, "Kolm Kuningat", "Paide", 50, 79.0);
-        Bookings myBooking = new Bookings(1l, LocalDate.of(2022, 10, 1), LocalDate.of(2022, 10, 3), client, hotel, 237.0);
-        Hotel hotel1 = new Hotel(3L, "Neli Kuningat", "Paide", 70, 89.0);
-        myBooking.setHotel(hotel1);
+        Bookings myBooking = new Bookings(1L, LocalDate.of(2022, 10, 1), LocalDate.of(2022, 10, 3), client, hotel, 237.0);
+        Hotel hotel1 = new Hotel(3L, "Neli Kuningat", "Paide", 70, 89.0);myBooking.setHotel(hotel1);
+
+       // when
         bookingRepository.updateBookingFromDB(myBooking);
 
-        ArgumentCaptor<Bookings> booking = ArgumentCaptor.forClass(Bookings.class);
-
-        verify(bookingRepository).updateBookingFromDB(booking.capture());
-
-        Bookings capturedBooking = booking.getValue();
-        Assertions.assertEquals(capturedBooking, myBooking);
+        // then
+        ArgumentCaptor<Bookings> bookingsArgumentCaptor = ArgumentCaptor.forClass(Bookings.class);
+        verify(bookingRepository).updateBookingFromDB(bookingsArgumentCaptor.capture());
+        Bookings capturedBooking = bookingsArgumentCaptor.getValue();
+        assertThat(capturedBooking).isEqualTo(myBooking);
     }
 
     @Test
     @Order(4)
     void testViewAllMyBookings() {
-        bookingController.viewAllMyBookings();
+        // when
+        underTest.viewAllMyBookings();
+
+        // then
         verify(bookingRepository).showAllMyBookingsFromDB();
     }
+
     @Test
     @Order(5)
     void testFindBookingById() {
-        Client client = new Client(3l, 1235l, "james", "andra", 20);
-        Hotel hotel = new Hotel(1l, "Radisson", "Tallinn", 40, 59.00);
+        // given
+        Client client = new Client(3L, 1235L, "james", "andra", 20);
+        Hotel hotel = new Hotel(1L, "Radisson", "Tallinn", 40, 59.00);
         double totalAmount = 236.00;
-        Bookings bookings = new Bookings(1l, LocalDate.of(2022, 10, 01), LocalDate.of(2022, 10, 05), client, hotel, totalAmount);
-        bookingController.findBookingById();
-        bookingRepository.findBookingFromDBById(1l);
+        Bookings bookings = new Bookings(1L, LocalDate.of(2022, 10, 1), LocalDate.of(2022, 10, 5), client, hotel, totalAmount);
+
+        // when
+        underTest.findBookingById();
+
+        // then
+       verify(bookingRepository).findBookingFromDBById(bookings.getId());
 
     }
 }
